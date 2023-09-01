@@ -9,10 +9,7 @@ import org.example.exception.NotEnoughMoneyException;
 import org.example.model.Account;
 import org.example.model.Transaction;
 import org.example.model.User;
-import org.example.service.AccountService;
-import org.example.service.AccountStatementService;
-import org.example.service.TransactionService;
-import org.example.service.UserService;
+import org.example.service.*;
 import org.example.service.impl.AccountStatementServiceImpl;
 import org.example.service.impl.CheckServiceImpl;
 
@@ -25,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+@Deprecated
 public class CleverBankApplication {
 
     final ApplicationContext context = new ApplicationContext();
@@ -34,11 +32,11 @@ public class CleverBankApplication {
 
     final TransactionService transactionService;
 
-    final CheckServiceImpl checkService;
+    final CheckService checkService;
 
     final AccountStatementService accountStatementService;
 
-    public CleverBankApplication(UserService userService, AccountService accountService, TransactionService transactionService, CheckServiceImpl checkService, AccountStatementService accountStatementService) {
+    public CleverBankApplication(UserService userService, AccountService accountService, TransactionService transactionService, CheckService checkService, AccountStatementService accountStatementService) {
         this.userService = userService;
         this.accountService = accountService;
         this.transactionService = transactionService;
@@ -68,7 +66,6 @@ public class CleverBankApplication {
         System.out.println("Выберите операцию:");
         System.out.println("1. Войти");
         System.out.println("2. Зарегистрироваться");
-       // int operation= scanner.nextInt();
 
         final Login enter = Login.byOrdinal(scanner.nextInt());
         

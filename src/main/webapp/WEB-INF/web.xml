@@ -11,7 +11,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>AccountController</servlet-name>
-        <url-pattern>/api/v1/users/*/accounts/*</url-pattern>
+        <url-pattern>/api/v1/users/accounts/*</url-pattern>
     </servlet-mapping>
 
     <servlet>

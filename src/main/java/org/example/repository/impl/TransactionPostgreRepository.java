@@ -73,16 +73,6 @@ public class TransactionPostgreRepository implements TransactionRepository {
 
                 transaction.setTime(rs.getTime("time"));
                 transaction.setType(TransactionType.valueOf(rs.getString("type")));
-//                Long recepientAccountId = Optional.ofNullable(transaction.getRecipientAccount())
-//                        .map(Account::getId)
-//                        .orElse(null);
-//
-//                Long senderAccountId = Optional.ofNullable(transaction.getSenderAccount())
-//                        .map(Account::getId)
-//                        .orElse(null);
-//
-//                preparedStatement.setObject(3, senderAccountId);
-//                preparedStatement.setObject(4, recepientAccountId);
 
                 Optional.ofNullable(rs.getObject("sender_account", Long.class))
                         .ifPresent(senderAccountId -> {
@@ -92,12 +82,7 @@ public class TransactionPostgreRepository implements TransactionRepository {
                         .ifPresent(recipientAccount -> {
                             transaction.setRecipientAccount(accountRepository.findById(recipientAccount));
                         });
-//                transaction.setSenderAccount(
-//                        accountRepository.findById(rs.getLong("sender_account"))
-//                );
-//                transaction.setRecipientAccount(
-//                        accountRepository.findById(rs.getLong("recipient_account"))
-//                );
+
                 transaction.setAmount(rs.getBigDecimal("amount"));
                 transaction.setDate(rs.getDate("date"));
 

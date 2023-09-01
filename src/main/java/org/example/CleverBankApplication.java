@@ -148,7 +148,6 @@ public class CleverBankApplication {
                 account = accountService.withdrawCash(account, cash);
 
                 Transaction transaction = new Transaction();
-                // transaction.setSenderAccount(account);
                 transaction.setAmount(cash);
                 transaction.setType(TransactionType.WITHDRAW);
                 transaction.setTime(Time.valueOf(LocalTime.now()));
@@ -176,10 +175,7 @@ public class CleverBankApplication {
                 transaction.setType(TransactionType.DEPOSIT);
                 transaction.setTime(Time.valueOf(LocalTime.now()));
                 transaction.setDate(Date.valueOf(LocalDate.now()));
-               // transaction.setRecipientAccount(account);
-
                 transactionService.create(transaction);
-
 
                 System.out.println("Счёт вашего аккаунта: " + account.getBalance() + " " + account.getCurrency());
             }
@@ -255,9 +251,6 @@ public class CleverBankApplication {
                 accountStatementService.createExtract(account,transactionIds,startDate,endDate);
 
             }
-
-
-
 
             default -> System.out.println("Операция " + context.getCurrentOperation() + " не найдена!");
         }

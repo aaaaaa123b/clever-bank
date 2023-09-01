@@ -24,8 +24,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addUser(String firstName, String lastName, String patronymic, String login) {
-        User user=userRepository.addUser(firstName, lastName, patronymic, login);
-        return user;
+        return userRepository.addUser(firstName, lastName, patronymic, login);
     }
 
     @Override

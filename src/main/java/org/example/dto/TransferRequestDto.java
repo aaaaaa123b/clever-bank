@@ -12,5 +12,4 @@ public class TransferRequestDto {
     private String number;
     private String numberRecipient;
     private BigDecimal cash;
-
 }

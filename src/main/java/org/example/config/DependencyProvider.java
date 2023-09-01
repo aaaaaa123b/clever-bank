@@ -3,10 +3,7 @@ package org.example.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.repository.*;
 import org.example.repository.impl.*;
-import org.example.service.AccountService;
-import org.example.service.AccountStatementService;
-import org.example.service.TransactionService;
-import org.example.service.UserService;
+import org.example.service.*;
 import org.example.service.impl.*;
 import org.example.util.ConnectionManager;
 
@@ -48,13 +45,14 @@ public class DependencyProvider {
         DEPENDENCIES.put(BankRepository.class, bankRepository);
 
         final CheckServiceImpl checkService = new CheckServiceImpl(bankRepository, checkRepository);
-        DEPENDENCIES.put(CheckServiceImpl.class, checkService);
+        DEPENDENCIES.put(CheckService.class, checkService);
 
         final TransactionService transactionService = new TransactionServiceImpl(transactionRepository);
         DEPENDENCIES.put(TransactionService.class, transactionService);
 
         final AccountStatementService accountStatementService = new AccountStatementServiceImpl(bankRepository, userService, transactionRepository);
         DEPENDENCIES.put(AccountStatementService.class, accountStatementService);
+
 
         final ObjectMapper objectMapper = new ObjectMapper();
         DEPENDENCIES.put(ObjectMapper.class, objectMapper);

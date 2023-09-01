@@ -54,21 +54,15 @@ public class AccountController extends HttpServlet {
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         final String path = request.getRequestURI();
         final String message = request.getReader().lines()
                 .reduce("", (accumulator, actual) -> accumulator + actual);
 
         if (path.matches(BALANCE)) {
             doBalance(message, response);
+            return;
         }
-    }
-
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final String path = request.getRequestURI();
-        final String message = request.getReader().lines()
-                .reduce("", (accumulator, actual) -> accumulator + actual);
 
         if (path.matches(DEPOSIT)) {
             doDeposite(message, response);
@@ -99,18 +93,8 @@ public class AccountController extends HttpServlet {
         }
         final Account account = accountService.findById(dto.getAccountId());
 
-        final String body = """
-                {
-                    "balance": "%s",
-                    "id": "%s",
-                    "number": "%s",
-                    
-                }
-                """.formatted(
-                account.getBalance(),
-                account.getId(),
-                account.getNumber()
-        );
+        final String body = objectMapper.valueToTree(account).toPrettyString();
+
         send(body, response);
     }
 
@@ -133,18 +117,8 @@ public class AccountController extends HttpServlet {
 
         transactionService.create(transaction);
 
-        final String body = """
-                {
-                    "balance": "%s",
-                    "id": "%s",
-                    "number": "%s",
-                    
-                }
-                """.formatted(
-                account.getBalance(),
-                account.getId(),
-                account.getNumber()
-        );
+        final String body = objectMapper.valueToTree(account).toPrettyString();
+
         send(body, response);
     }
 
@@ -168,18 +142,8 @@ public class AccountController extends HttpServlet {
         transaction.setRecipientAccount(account);
         transactionService.create(transaction);
 
-        final String body = """
-                {
-                    "balance": "%s",
-                    "id": "%s",
-                    "number": "%s",
-                    
-                }
-                """.formatted(
-                account.getBalance(),
-                account.getId(),
-                account.getNumber()
-        );
+        final String body = objectMapper.valueToTree(account).toPrettyString();
+
         send(body, response);
     }
 
@@ -208,7 +172,7 @@ public class AccountController extends HttpServlet {
         transaction.setSenderAccount(account);
         transaction.setRecipientAccount(accountRecipient);
 
-        accountService.transfer(account, accountRecipient, dto.getCash());
+        account = accountService.transfer(account, accountRecipient, dto.getCash());
 
         LocalTime currentTime = LocalTime.now();
         LocalDate currentDate = LocalDate.now();
@@ -220,13 +184,8 @@ public class AccountController extends HttpServlet {
 
         checkService.createCheck(transaction);
 
-        final String body = """
-                {
-                   
-                   
-                }
-                """.formatted(
-        );
+        final String body = objectMapper.valueToTree(account).toPrettyString();
+
         send(body, response);
     }
 
@@ -242,18 +201,16 @@ public class AccountController extends HttpServlet {
 
         ArrayList<Integer> transactionIds;
 
-        transactionIds = checkService.findTransactions(dto.getStartDate(), dto.getEndDate(), account);
+        LocalDate startDate = LocalDate.parse(dto.getStartDate());
+        LocalDate endDate = LocalDate.parse(dto.getEndDate());
+
+        transactionIds = checkService.findTransactions(startDate, endDate, account);
 
         System.out.println(transactionIds);
-        accountStatementService.createExtract(account, transactionIds, dto.getStartDate(), dto.getEndDate());
+        accountStatementService.createExtract(account, transactionIds, startDate, endDate);
 
-        final String body = """
-                {
-                   
-                   
-                }
-                """.formatted(
-        );
+        final String body = objectMapper.valueToTree(account).toPrettyString();
+
         send(body, response);
     }
 

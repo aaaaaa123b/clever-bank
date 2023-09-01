@@ -10,7 +10,6 @@ import java.time.LocalDate;
 public class ExctractRequestDto {
 
     String number;
-    LocalDate startDate;
-    LocalDate endDate;
-
+    String startDate;
+    String endDate;
 }

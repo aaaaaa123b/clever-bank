@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +28,7 @@ public class InterestCalculationServiceImpl {
     private final AccountRepository accountRepository;
     private final ConnectionManager connectionManager;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private LocalDate currentDate = LocalDate.now();
+    private final LocalDate currentDate = LocalDate.now();
     private LocalDate firstDayOfNextMonth = currentDate.plusMonths(1).with(TemporalAdjusters.firstDayOfMonth());
 
 
@@ -90,7 +91,7 @@ public class InterestCalculationServiceImpl {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         mapper.findAndRegisterModules();
-        File yamlFile = new File(classLoader.getResource("interest-config.yaml").getFile());
+        File yamlFile = new File(Objects.requireNonNull(classLoader.getResource("interest-config.yaml")).getFile());
         InterestConfig interestConfig;
         try {
             interestConfig = mapper.readValue(yamlFile, InterestConfig.class);

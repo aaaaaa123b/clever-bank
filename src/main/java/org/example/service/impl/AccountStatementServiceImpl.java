@@ -6,7 +6,6 @@ import org.example.model.Transaction;
 import org.example.model.User;
 import org.example.repository.BankRepository;
 import org.example.repository.TransactionRepository;
-import org.example.repository.UserRepository;
 import org.example.service.AccountStatementService;
 import org.example.service.UserService;
 

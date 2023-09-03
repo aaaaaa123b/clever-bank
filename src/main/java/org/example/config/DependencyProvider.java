@@ -53,6 +53,8 @@ public class DependencyProvider {
         final AccountStatementService accountStatementService = new AccountStatementServiceImpl(bankRepository, userService, transactionRepository);
         DEPENDENCIES.put(AccountStatementService.class, accountStatementService);
 
+        final MoneyStatementService moneyStatementService = new MoneyStatementServiceServiceImpl(bankRepository,userService,transactionRepository);
+        DEPENDENCIES.put(MoneyStatementService.class, moneyStatementService);
 
         final ObjectMapper objectMapper = new ObjectMapper();
         DEPENDENCIES.put(ObjectMapper.class, objectMapper);

@@ -20,6 +20,12 @@ public class TransactionPostgreRepository implements TransactionRepository {
         this.accountRepository = accountRepository;
     }
 
+    /**
+     * Creates a transaction in the database.
+     *
+     * @param transaction the transaction object
+     * @return the transaction object with the generated ID.
+     */
     public Transaction create(Transaction transaction) {
         Connection connection = connectionManager.getConnection();
         final String query = "INSERT INTO transactions ( time, type, sender_account,recipient_account,amount,date) VALUES (?,?, ?, ?, ?,?)RETURNING id";
@@ -45,7 +51,9 @@ public class TransactionPostgreRepository implements TransactionRepository {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     long generatedId = resultSet.getLong("id");
+                    transaction.setId( generatedId);
                     System.out.println("Generated ID: " + generatedId);
+                    return transaction;
                 } else {
                     System.out.println("Не удалось добавить пользователя.");
                     return null;
@@ -55,11 +63,17 @@ public class TransactionPostgreRepository implements TransactionRepository {
         } catch (SQLException e) {
             throw new RuntimeException("Ошибка при выполнении SQL-запроса", e);
         }
-        return null;
     }
 
+
+    /**
+     * Finds a transaction by its ID in the database.
+     *
+     * @param id the transaction ID
+     * @return the transaction object.
+     */
     @Override
-    public Transaction findById(int id) {
+    public Transaction findById(long id) {
         final Connection connection = connectionManager.getConnection();
         String query = "SELECT * FROM transactions WHERE id = ?";
         try {

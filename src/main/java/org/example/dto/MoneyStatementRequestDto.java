@@ -5,9 +5,8 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ExctractRequestDto {
+public class MoneyStatementRequestDto {
 
     String number;
-    String startDate;
-    String endDate;
+
 }

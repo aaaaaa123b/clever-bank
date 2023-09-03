@@ -2,6 +2,8 @@ package org.example.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.example.model.Account;
 import org.example.repository.AccountRepository;
 
@@ -36,8 +38,6 @@ public class InterestCalculationServiceImpl {
         this.accountRepository = accountRepository;
         this.connectionManager = connectionManager;
     }
-
-    //todo:асинхронность??
 
     public void scheduleInterestCalculation() {
         scheduler.scheduleAtFixedRate(this::calculateInterest, 5, 5, TimeUnit.SECONDS);

@@ -2,7 +2,6 @@ package org.example.repository.impl;
 
 import org.example.exception.EntityNotFoundException;
 import org.example.model.Account;
-import org.example.model.User;
 import org.example.repository.AccountRepository;
 import org.example.util.ConnectionManager;
 
@@ -15,6 +14,12 @@ public class AccountPostgreRepository implements AccountRepository {
         this.connectionManager = connectionManager;
     }
 
+    /**
+     * Finds an account by its ID in the database.
+     *
+     * @param id the account ID
+     * @return the transaction object.
+     */
     @Override
     public Account findById(Long id) {
         final Connection connection = connectionManager.getConnection();
@@ -45,6 +50,12 @@ public class AccountPostgreRepository implements AccountRepository {
         }
     }
 
+    /**
+     * Finds an account by its number in the database.
+     *
+     * @param number the account number
+     * @return the account object found by its number.
+     */
     @Override
     public Account findByNumber(String number) {
         final Connection connection = connectionManager.getConnection();
@@ -75,8 +86,14 @@ public class AccountPostgreRepository implements AccountRepository {
         }
     }
 
+    /**
+     * Updates account data in the database.
+     *
+     * @param connection the database connection
+     * @param account the account object
+     */
     @Override
-    public Account update(Connection connection,Account account) {
+    public void update(Connection connection, Account account) {
         final long id = account.getId();
 
         String query = "UPDATE accounts SET balance = ?, currency = ?,number=?,user_id=?,bank_id=?,created_date=? WHERE id = ?";
@@ -101,7 +118,6 @@ public class AccountPostgreRepository implements AccountRepository {
             throw new RuntimeException("Ошибка при обработке SQL-запроса", e);
         }
 
-        return account;
     }
 
     @Override

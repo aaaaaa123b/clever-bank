@@ -19,7 +19,12 @@ public class BankPostgreRepository implements BankRepository {
         this.connectionManager = connectionManager;
     }
 
-
+    /**
+     * Finds a bank by its ID in the database.
+     *
+     * @param id the bank ID
+     * @return the bank object from the database.
+     */
     @Override
     public Bank findById(int id) {
         final Connection connection = connectionManager.getConnection();

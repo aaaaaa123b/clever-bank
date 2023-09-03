@@ -10,8 +10,6 @@ import org.example.model.Account;
 import org.example.model.Transaction;
 import org.example.model.User;
 import org.example.service.*;
-import org.example.service.impl.AccountStatementServiceImpl;
-import org.example.service.impl.CheckServiceImpl;
 
 import java.math.BigDecimal;
 import java.sql.Date;

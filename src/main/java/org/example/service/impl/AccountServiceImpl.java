@@ -18,6 +18,14 @@ public class AccountServiceImpl implements AccountService {
         this.accountRepository=accountRepository;
         this.connectionManager=connectionManager;
     }
+
+    /**
+     * Withdraws money from an account.
+     *
+     * @param account the account to withdraw funds from
+     * @param cash the amount of cash to withdraw
+     * @return the updated account object.
+     */
     @Override
     public Account withdrawCash(Account account, BigDecimal cash) {
         if (account.getBalance().compareTo(cash) < 0) {
@@ -49,6 +57,13 @@ public class AccountServiceImpl implements AccountService {
         return account;
     }
 
+    /**
+     * Deposits money into an account.
+     *
+     * @param account the account to deposit funds into
+     * @param cash the amount of cash to deposit
+     * @return the updated account object.
+     */
     @Override
     public Account addCash(Account account, BigDecimal cash) {
         try (Connection connection = connectionManager.getConnection()){
@@ -78,24 +93,31 @@ public class AccountServiceImpl implements AccountService {
         return account;
     }
 
+    /**
+     * Transfers money from one account to another.
+     *
+     * @param source the sender's account
+     * @param target the recipient's account
+     * @param cash the amount of cash to transfer
+     * @return the updated sender's account object.
+     */
     @Override
-    public Account transfer(Account source, Account targer, BigDecimal cash) {
+    public Account transfer(Account source, Account target, BigDecimal cash) {
         try (Connection connection = connectionManager.getConnection()){
             connection.setAutoCommit(false);
 
             try {
             source.setBalance(source.getBalance().subtract(cash));
-            targer.setBalance(targer.getBalance().add(cash));
+            target.setBalance(target.getBalance().add(cash));
 
             accountRepository.update(connection, source);
-            accountRepository.update(connection, targer);
+            accountRepository.update(connection, target);
 
             connection.commit();
 
             } catch (SQLException e) {
                 //throw new RuntimeException("Ошибка при обработке SQL-запроса", e);
                 try {
-                    // STEP 3 - Roll back transaction
                     System.out.println("Transaction is being rolled back.");
                     connection.rollback();
                 } catch (Exception ex) {
@@ -110,11 +132,23 @@ public class AccountServiceImpl implements AccountService {
         return source;
     }
 
+    /**
+     * Finds an account by its ID.
+     *
+     * @param id the account ID
+     * @return the account object found by its ID.
+     */
     @Override
     public Account findById(long id) {
         return accountRepository.findById(id);
     }
 
+    /**
+     * Finds an account by its number.
+     *
+     * @param number the account number
+     * @return the account object found by its number.
+     */
     @Override
     public Account findByNumber(String number) {
         return accountRepository.findByNumber(number);

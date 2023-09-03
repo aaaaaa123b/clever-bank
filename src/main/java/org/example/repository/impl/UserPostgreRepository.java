@@ -15,6 +15,12 @@ public class UserPostgreRepository implements UserRepository {
         this.connectionManager = connectionManager;
     }
 
+    /**
+     * Finds a user by their ID in the database.
+     *
+     * @param id the user's ID
+     * @return the user object.
+     */
     @Override
     public User findById(Long id) {
 
@@ -47,10 +53,18 @@ public class UserPostgreRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-//        users.put(user.getId(), user);
         return user;
     }
 
+    /**
+     * Creates a new user in the database.
+     *
+     * @param firstName the user's first name
+     * @param lastName the user's last name
+     * @param patronymic the user's patronymic name
+     * @param login the user's login
+     * @return the user object.
+     */
     @Override
     public User addUser(String firstName, String lastName, String patronymic, String login) {
 

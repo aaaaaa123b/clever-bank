@@ -15,11 +15,13 @@ import org.example.model.Account;
 import org.example.model.Transaction;
 import org.example.service.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class AccountController extends HttpServlet {
     public static final String WITHDRAW = ACCOUNTS_PREFIX + "/withdraw/";
     public static final String TRANSFER = ACCOUNTS_PREFIX + "/transfer/";
     public static final String EXTRACT = ACCOUNTS_PREFIX + "/extract/";
+    public static final String MONEY_STATEMENT = ACCOUNTS_PREFIX + "/money-statement/";
 
 
     private ObjectMapper objectMapper;
@@ -41,6 +44,7 @@ public class AccountController extends HttpServlet {
     private TransactionService transactionService;
     private CheckService checkService;
     private AccountStatementService accountStatementService;
+    private MoneyStatementService moneyStatementService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -51,6 +55,7 @@ public class AccountController extends HttpServlet {
         transactionService = (TransactionService) DependencyProvider.get().forClass(TransactionService.class);
         checkService = (CheckService) DependencyProvider.get().forClass(CheckService.class);
         accountStatementService = (AccountStatementService) DependencyProvider.get().forClass(AccountStatementService.class);
+        moneyStatementService = (MoneyStatementService) DependencyProvider.get().forClass(MoneyStatementService.class);
     }
 
     @Override
@@ -78,6 +83,12 @@ public class AccountController extends HttpServlet {
             doTransfer(message, response);
             return;
         }
+
+        if (path.matches(MONEY_STATEMENT)) {
+            doMoneyStatement(message, response);
+            return;
+        }
+
         if (path.matches(EXTRACT)) {
             doExtract(message, response);
         }
@@ -182,14 +193,17 @@ public class AccountController extends HttpServlet {
 
         transactionService.create(transaction);
 
-        checkService.createCheck(transaction);
+        final String check = checkService.createCheck(transaction);
+        final String filename = "%d.pdf".formatted(transaction.getId());
 
-        final String body = objectMapper.valueToTree(account).toPrettyString();
-
-        send(body, response);
+        try {
+            sendCheck(filename, check, response);
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
     }
 
-    private void doExtract(String message, HttpServletResponse response) {
+    private void doExtract(String message, HttpServletResponse response) throws IOException {
         final ExctractRequestDto dto;
         try {
             dto = objectMapper.readValue(message, ExctractRequestDto.class);
@@ -207,12 +221,40 @@ public class AccountController extends HttpServlet {
         transactionIds = checkService.findTransactions(startDate, endDate, account);
 
         System.out.println(transactionIds);
-        accountStatementService.createExtract(account, transactionIds, startDate, endDate);
+        byte[] pdfBytes = accountStatementService.createExtract(account, transactionIds, startDate, endDate);
 
-        final String body = objectMapper.valueToTree(account).toPrettyString();
+//        final String body = objectMapper.valueToTree(account).toPrettyString();
 
-        send(body, response);
+        final String title = "statement-" + Instant.now().toEpochMilli();
+        sendPdf(title, pdfBytes, response);
     }
+
+
+
+    private void doMoneyStatement(String message, HttpServletResponse response) throws IOException {
+        final MoneyStatementRequestDto dto;
+        try {
+            dto = objectMapper.readValue(message, MoneyStatementRequestDto.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        Account account = accountService.findByNumber(dto.getNumber());
+
+        ArrayList<Long> transactionIds;
+
+        transactionIds = checkService.findAllTransactions( account);
+
+        System.out.println(transactionIds);
+        byte[] pdfBytes = moneyStatementService.createStatement(account, transactionIds);
+
+//        final String body = objectMapper.valueToTree(account).toPrettyString();
+
+        final String title = "statement-" + Instant.now().toEpochMilli();
+        sendPdf(title, pdfBytes, response);
+    }
+
+
 
 
     private void send(String message, HttpServletResponse response) {
@@ -230,6 +272,21 @@ public class AccountController extends HttpServlet {
         out.flush();
     }
 
+    private void sendCheck(String title, String check, HttpServletResponse response) throws IOException {
+        response.setContentType("text/plain");
 
+        PrintWriter writer = response.getWriter();
+        writer.write(check);
+        writer.close();
+    }
+
+    private void sendPdf(String title, byte[] pdfBytes, HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentLength(pdfBytes.length);
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + title + ".pdf\"");
+
+        response.getOutputStream().write(pdfBytes);
+    }
 }
 

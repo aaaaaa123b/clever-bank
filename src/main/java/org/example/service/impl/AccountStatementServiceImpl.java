@@ -8,10 +8,14 @@ import org.example.repository.BankRepository;
 import org.example.repository.TransactionRepository;
 import org.example.service.AccountStatementService;
 import org.example.service.UserService;
+import org.example.util.PdfUtil;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+
 
 public class AccountStatementServiceImpl implements AccountStatementService {
 
@@ -22,26 +26,42 @@ public class AccountStatementServiceImpl implements AccountStatementService {
     private final TransactionRepository transactionRepository;
 
 
+
+
     public AccountStatementServiceImpl(BankRepository bankRepository, UserService userService, TransactionRepository transactionRepository) {
         this.bankRepository = bankRepository;
         this.userService = userService;
         this.transactionRepository = transactionRepository;
+
     }
 
-
+    /**
+     * Creates an account statement.
+     *
+     * @param account   the account
+     * @param ids       a list of transaction IDs associated with the account
+     * @param startDate the start date for the statement
+     * @param endDate   the end date for the statement
+     */
     @Override
-    public void createExtract(Account account, ArrayList<Integer> ids, LocalDate startDate, LocalDate endDate) {
+    public byte[] createExtract(Account account, ArrayList<Integer> ids, LocalDate startDate, LocalDate endDate) {
         int senderBankId = account.getBankId();
         Bank senderBank = bankRepository.findById(senderBankId);
 
         long userId = account.getUserId();
         User user = userService.findById(userId);
 
+        if(startDate==null){
+            Instant instant = account.getCreatedDate().toInstant();
+            startDate = instant.atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+
         LocalTime currentTime = LocalTime.ofSecondOfDay(LocalTime.now().getHour());
         LocalDate currentDate = LocalDate.now();
 
 
-        var extractText = """
+
+        StringBuilder extractText = new StringBuilder("""
                                                       Выписка
                                                          %s
                     Клиент                           | %s %s %s
@@ -62,11 +82,10 @@ public class AccountStatementServiceImpl implements AccountStatementService {
                 startDate, endDate, currentDate, currentTime,
                 account.getBalance()
 
-        );
+        ));
         System.out.println(extractText);
 
-
-        ids.forEach(id -> {
+        for (Integer id : ids) {
             Transaction transaction = transactionRepository.findById(id);
 
             final String label = switch (transaction.getType()) {
@@ -75,12 +94,17 @@ public class AccountStatementServiceImpl implements AccountStatementService {
                 case TRANSFER -> getTransferMessage(transaction, account.getId());
             };
 
-            var transactionText = """ 
+            var transactionText = """
                     %s             %s                         %s""".formatted(
                     transaction.getDate(), label, transaction.getAmount()
             );
             System.out.println(transactionText);
-        });
+            extractText.append("\n");
+            extractText.append(transactionText);
+        }
+
+//        String result = new String()
+        return PdfUtil.toPdf(extractText.toString());
     }
 
     private String getTransferMessage(Transaction transaction, Long id) {
@@ -96,4 +120,7 @@ public class AccountStatementServiceImpl implements AccountStatementService {
         final User senderUser = userService.findById(senderUserId);
         return "Перевод от: " + senderUser.getLastName();
     }
+
+
+
 }

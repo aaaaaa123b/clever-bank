@@ -12,23 +12,20 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
 
+
     public TransactionServiceImpl(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
 
+    /**
+     * Creates a transaction.
+     *
+     * @param transaction The transaction object
+     * @return the transaction object with the generated ID.
+     */
     @Override
     public Transaction create(Transaction transaction) {
      return transactionRepository.create(transaction);
-    }
-
-    @Override
-    public Transaction findAll(Account account, LocalTime start, LocalTime date) {
-        return null;
-    }
-
-    @Override
-    public BigDecimal configuration() {
-        return null;
     }
 
 

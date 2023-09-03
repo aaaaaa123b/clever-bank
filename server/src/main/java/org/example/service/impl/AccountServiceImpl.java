@@ -155,7 +155,17 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account save(Account account) {
-        return null;
+    public Account createAccount(Account account) {
+        return accountRepository.create(account);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        accountRepository.delete(id);
+    }
+
+    @Override
+    public Account updateAccount(Long id, Account account) {
+        return accountRepository.update(id, account);
     }
 }

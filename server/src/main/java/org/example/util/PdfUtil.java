@@ -55,7 +55,12 @@ public class PdfUtil {
             return byteArrayOutputStream.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
+            throw new RuntimeException();
+        } catch (Throwable e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException();
         }
+
     }
 }

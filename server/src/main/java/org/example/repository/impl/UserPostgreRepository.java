@@ -59,10 +59,10 @@ public class UserPostgreRepository implements UserRepository {
     /**
      * Creates a new user in the database.
      *
-     * @param firstName the user's first name
-     * @param lastName the user's last name
+     * @param firstName  the user's first name
+     * @param lastName   the user's last name
      * @param patronymic the user's patronymic name
-     * @param login the user's login
+     * @param login      the user's login
      * @return the user object.
      */
     @Override
@@ -84,7 +84,7 @@ public class UserPostgreRepository implements UserRepository {
                 if (resultSet.next()) {
                     long id = resultSet.getLong("id");
                     System.out.println("Generated ID: " + id);
-                    final User user=new User();
+                    final User user = new User();
                     user.setId(id);
                     user.setFirstName(firstName);
                     user.setLastName(lastName);
@@ -99,6 +99,47 @@ public class UserPostgreRepository implements UserRepository {
 
         } catch (SQLException e) {
             throw new RuntimeException("Ошибка при выполнении SQL-запроса", e);
+        }
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Connection connection = connectionManager.getConnection();
+        final String query = "DELETE FROM users WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка при выполнении SQL-запроса", e);
+        }
+    }
+
+    @Override
+    public User updateUser(Long id, User user) {
+        Connection connection = connectionManager.getConnection();
+
+        String query = "UPDATE users SET first_name = ?, last_name = ?, patronymic=?, login=? WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(3, user.getPatronymic());
+            preparedStatement.setString(4, user.getLogin());
+            preparedStatement.setLong(5, id);
+
+            int result = preparedStatement.executeUpdate();
+
+            if (result == 0) {
+                String message = "Пользователь с id %d не найден.".formatted(id);
+                throw new EntityNotFoundException(message);
+            }
+
+            user.setId(id);
+            return user;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка при обработке SQL-запроса", e);
         }
     }
 

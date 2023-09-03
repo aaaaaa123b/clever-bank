@@ -28,7 +28,11 @@ public interface AccountRepository {
      * @param connection the database connection
      * @param account the account object
      */
-    void update(Connection connection, Account account);
+    Account update(Connection connection, Account account);
 
     Account create(Account account);
+
+    void delete(Long id);
+
+    Account update(Long id, Account account);
 }

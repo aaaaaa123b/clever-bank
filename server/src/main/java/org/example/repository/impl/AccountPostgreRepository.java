@@ -2,6 +2,7 @@ package org.example.repository.impl;
 
 import org.example.exception.EntityNotFoundException;
 import org.example.model.Account;
+import org.example.model.User;
 import org.example.repository.AccountRepository;
 import org.example.util.ConnectionManager;
 
@@ -93,7 +94,7 @@ public class AccountPostgreRepository implements AccountRepository {
      * @param account the account object
      */
     @Override
-    public void update(Connection connection, Account account) {
+    public Account update(Connection connection, Account account) {
         final long id = account.getId();
 
         String query = "UPDATE accounts SET balance = ?, currency = ?,number=?,user_id=?,bank_id=?,created_date=? WHERE id = ?";
@@ -114,6 +115,7 @@ public class AccountPostgreRepository implements AccountRepository {
                 throw new EntityNotFoundException(message);
             }
 
+            return account;
         } catch (SQLException e) {
             throw new RuntimeException("Ошибка при обработке SQL-запроса", e);
         }
@@ -122,6 +124,54 @@ public class AccountPostgreRepository implements AccountRepository {
 
     @Override
     public Account create(Account account) {
-        return null;
+        Connection connection = connectionManager.getConnection();
+        final String query = "INSERT INTO accounts (balance, currency, number, user_id, bank_id, created_date) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
+
+        try (
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setBigDecimal(1, account.getBalance());
+            preparedStatement.setString(2, account.getCurrency());
+            preparedStatement.setString(3, account.getNumber());
+            preparedStatement.setLong(4, account.getUserId());
+            preparedStatement.setLong(5, account.getBankId());
+            preparedStatement.setDate(6, new Date(account.getCreatedDate().getTime()));
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    long id = resultSet.getLong("id");
+                    System.out.println("Generated ID: " + id);
+                    account.setId(id);
+                    return account;
+                } else {
+                    System.out.println("Не удалось добавить пользователя.");
+                    return null;
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка при выполнении SQL-запроса", e);
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        Connection connection = connectionManager.getConnection();
+        final String query = "DELETE FROM accounts WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка при выполнении SQL-запроса", e);
+        }
+    }
+
+    @Override
+    public Account update(Long id, Account account) {
+        Connection connection = connectionManager.getConnection();
+
+        account.setId(id);
+        return update(connection, account);
     }
 }

@@ -12,4 +12,9 @@ public interface BankRepository {
      */
     Bank findById(int id);
 
+    void deleteById(Long id);
+
+    Bank create(Bank bank);
+
+    Bank update(int id, Bank bank);
 }

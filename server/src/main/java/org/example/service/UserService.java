@@ -26,4 +26,10 @@ public interface UserService {
     User addUser(String firstName, String lastName, String patronymic, String login);
 
     boolean exists(Long id);
+
+    void deleteById(Long id);
+
+    User addUser(User user);
+
+    User updateUser(Long id, User user);
 }

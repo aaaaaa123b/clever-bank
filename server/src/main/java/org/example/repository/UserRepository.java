@@ -24,4 +24,8 @@ public interface UserRepository {
      * @return the user object.
      */
     User addUser(String firstName, String lastName, String patronymic, String login);
+
+    void deleteById(Long id);
+
+    User updateUser(Long id, User user);
 }

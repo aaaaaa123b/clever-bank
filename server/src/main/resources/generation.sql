@@ -1,69 +1,71 @@
-CREATE DATABASE "dbCleverBank"
-    WITH OWNER "postgres";
+create sequence banks_id_seq;
 
-CREATE TABLE public.users
+alter sequence banks_id_seq owner to postgres;
+
+create table users
 (
-    id BIGSERIAL
-        NOT NULL
-        CONSTRAINT users_pk PRIMARY KEY,
-    first_name VARCHAR(128),
-    last_name VARCHAR(128),
-    patronymic VARCHAR(128),
-    login VARCHAR(64)
+    id         bigserial
+        constraint users_pk
+            primary key,
+    first_name varchar(128),
+    last_name  varchar(128),
+    patronymic varchar(128),
+    login      varchar(64)
 );
 
-ALTER TABLE public.users
-    OWNER TO postgres;
+alter table users
+    owner to postgres;
 
-CREATE TABLE public.accounts
+create table banks
 (
-    id BIGSERIAL
-        NOT NULL
-        CONSTRAINT accounts_pk PRIMARY KEY,
-    balance NUMERIC(10, 2) NOT NULL,
-    currency VARCHAR(3) NOT NULL,
-    number VARCHAR(10) NOT NULL,
-    user_id BIGINT
-        CONSTRAINT accounts_users_id_fk
-        REFERENCES users(id)
+    id   integer default nextval('banks_id_seq'::regclass) not null
+        constraint banks_pk
+            primary key,
+    name varchar(30)
 );
 
-ALTER TABLE public.accounts
-    OWNER TO postgres;
+alter table banks
+    owner to postgres;
 
-CREATE TABLE public.banks
+alter sequence banks_id_seq owned by banks.id;
+
+create table accounts
 (
-    id BIGSERIAL
-        NOT NULL
-        CONSTRAINT banks_pk PRIMARY KEY,
-    name VARCHAR(30)
+    id           bigserial
+        constraint accounts_pk
+            primary key,
+    balance      numeric(10, 2) not null,
+    currency     varchar(3)     not null,
+    number       varchar(128)   not null,
+    user_id      bigint
+        constraint accounts_users_id_fk
+            references users,
+    bank_id      integer
+        constraint accounts__id_fk
+            references banks,
+    created_date date
 );
 
-ALTER TABLE public.banks
-    OWNER TO postgres;
+alter table accounts
+    owner to postgres;
 
-CREATE TABLE public.transactions
+create table transactions
 (
-    id BIGSERIAL
-        NOT NULL
-        CONSTRAINT transactions_pk PRIMARY KEY,
-    time time,
-    type VARCHAR(30),
-    sender_account BIGINT
-        CONSTRAINT sender_account_banks_id_fk
-        REFERENCES accounts(id),
-    sender_bank_id BIGINT
-        CONSTRAINT sender_bank_banks_id_fk
-        REFERENCES banks(id),
-    recipient_account BIGINT
-        CONSTRAINT recipient_bank_banks_id_fk
-        REFERENCES accounts(id),
-    recipient_bank_id BIGINT
-        CONSTRAINT recipient_bank_banks_id_fk
-        REFERENCES banks(id),
-    amount NUMERIC(10, 2)
+    id                bigserial
+        constraint transactions_pk
+            primary key,
+    time              time,
+    type              varchar(255),
+    sender_account    bigint
+        constraint sender_account_banks_id_fk
+            references accounts,
+    recipient_account bigint
+        constraint recipient_account_banks_id_fk
+            references accounts,
+    amount            numeric(10, 2),
+    date              date
 );
 
-ALTER TABLE public.transactions
-    OWNER TO postgres;
+alter table transactions
+    owner to postgres;
 

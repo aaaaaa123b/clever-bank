@@ -50,11 +50,9 @@ public interface AccountService {
      */
     Account findByNumber(String number);
 
-    /**
-     *
-     * @param account
-     * @return
-     */
-    Account save(Account account);
+    Account createAccount(Account account);
 
+    void deleteById(Long id);
+
+    Account updateAccount(Long id, Account account);
 }

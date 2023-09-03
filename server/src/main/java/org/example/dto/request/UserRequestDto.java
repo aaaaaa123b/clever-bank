@@ -1,14 +1,10 @@
-package org.example.model;
+package org.example.dto.request;
 
 import lombok.Data;
 
-import java.util.List;
-import java.util.Map;
-
 @Data
-public class User {
+public class UserRequestDto {
 
-    private Long id;
     private String firstName;
     private String lastName;
     private String patronymic;

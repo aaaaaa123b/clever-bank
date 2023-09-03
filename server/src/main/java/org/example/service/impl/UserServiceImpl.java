@@ -50,4 +50,19 @@ public class UserServiceImpl implements UserService {
     public boolean exists(Long id) {
         return findById(id) != null;
     }
+
+    @Override
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public User addUser(User user) {
+        return addUser(user.getFirstName(), user.getLastName(), user.getPatronymic(), user.getLogin());
+    }
+
+    @Override
+    public User updateUser(Long id, User user) {
+        return userRepository.updateUser(id, user);
+    }
 }

@@ -4,90 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f37cb0a5-334d-42f2-ae42-553c50b7a56a" name="Changes" comment="Добавлены javadoc, unit-тесты (junit + mockito), получение выписки по счёту и сохранение её в pdf, получение чеков и сохранение их в txt, получение &quot;money statement&quot;">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/CleverBankApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/config/DependencyProvider.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/config/InterestConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/context/ApplicationContext.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/controller/AccountController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/controller/AuthController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/controller/HelpController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/BalanceRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/DepositRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/ExctractRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/LoginRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/MoneyStatementRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/SignupRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/TransferRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dto/WithdrawRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/enumeration/ApplicationState.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/enumeration/Login.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/enumeration/Operation.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/enumeration/TimeForExctract.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/enumeration/TransactionType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/exception/EntityNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/exception/NotEnoughMoneyException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/facade/AccountFacadeImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/Account.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/Bank.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/Transaction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/AccountRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/BankRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/CheckRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/TransactionRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/impl/AccountPostgreRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/impl/BankPostgreRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/impl/CheckPostgreRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/impl/TransactionPostgreRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/impl/UserPostgreRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/AccountService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/AccountStatementService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/CheckService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/MoneyStatementService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/TransactionService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/impl/AccountServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/impl/AccountStatementServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/impl/CheckServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/impl/InterestCalculationServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/impl/MoneyStatementServiceServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/impl/TransactionServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/impl/UserServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/util/ConnectionManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/util/DatabaseInitializer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/util/PdfUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/anon.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/bank.config" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/couriernew.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/generation.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/interest-config.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/repository/impl/AccountPostgreRepositoryTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/repository/impl/BankPostgreRepositoryTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/repository/impl/CheckPostgreRepositoryTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/repository/impl/TransactionPostgreRepositoryTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/repository/impl/UserPostgreRepositoryTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/service/impl/AccountServiceImplTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/service/impl/TransactionServiceImplTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/service/impl/UserServiceImplTest.java" beforeDir="false" />
-    </list>
+    <list default="true" id="f37cb0a5-334d-42f2-ae42-553c50b7a56a" name="Changes" comment="Клиент добавлен в отдельную папку &quot;client&quot;" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -188,6 +105,9 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\diana\IdeaProjects\CleverBank\server" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\diana\IdeaProjects\CleverBank\src\main\resources" />
       <recent name="C:\Users\diana\IdeaProjects\CleverBank\src\main\webapp\WEB-INF" />
@@ -462,7 +382,9 @@
       <workItem from="1693569377612" duration="6805000" />
       <workItem from="1693585348001" duration="20571000" />
       <workItem from="1693686299173" duration="21606000" />
-      <workItem from="1693734115213" duration="20951000" />
+      <workItem from="1693734115213" duration="21473000" />
+      <workItem from="1693764089843" duration="171000" />
+      <workItem from="1693764535792" duration="292000" />
     </task>
     <task id="LOCAL-00001" summary="Добавлена система контроля версий">
       <created>1693568340788</created>
@@ -527,7 +449,28 @@
       <option name="project" value="LOCAL" />
       <updated>1693763036541</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Подготовлен .gitignore для переноса сервера в отдельную папку">
+      <created>1693763539619</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1693763539619</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Сервер перенесён в отдельную папку &quot;server&quot;">
+      <created>1693763571261</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1693763571261</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Клиент добавлен в отдельную папку &quot;client&quot;">
+      <created>1693763655902</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1693763655902</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -557,7 +500,10 @@
     <MESSAGE value="Класс CleverBankApplication для работы с консолью помечен к удалению" />
     <MESSAGE value="Добавлена возможность работать с сервером через HTTP-сервлеты (из консольного клиентского приложения)" />
     <MESSAGE value="Добавлены javadoc, unit-тесты (junit + mockito), получение выписки по счёту и сохранение её в pdf, получение чеков и сохранение их в txt, получение &quot;money statement&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавлены javadoc, unit-тесты (junit + mockito), получение выписки по счёту и сохранение её в pdf, получение чеков и сохранение их в txt, получение &quot;money statement&quot;" />
+    <MESSAGE value="Подготовлен .gitignore для переноса сервера в отдельную папку" />
+    <MESSAGE value="Сервер перенесён в отдельную папку &quot;server&quot;" />
+    <MESSAGE value="Клиент добавлен в отдельную папку &quot;client&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Клиент добавлен в отдельную папку &quot;client&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

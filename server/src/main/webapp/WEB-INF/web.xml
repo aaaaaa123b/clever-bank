@@ -34,4 +34,14 @@
         <url-pattern>/api/v1/help/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>CrudController</servlet-name>
+        <servlet-class>org.example.controller.CrudController</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CrudController</servlet-name>
+        <url-pattern>/api/v1/crud/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

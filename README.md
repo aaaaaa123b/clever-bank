@@ -48,3 +48,87 @@ java -jar CleverBankClient-1.0-SNAPSHOT.jar
 7. Открыть корневую папку Tomcat, перейти в папку "webapps", вставить архив ROOT.war
 8. Перейти в папку "bin" корневой папки Tomcat, используя скрипт startup.sh запустить сервер
 9. После выполненных действий сервер будет доступен по адресу localhost:8080.
+
+## Пример CRUD-операций
+
+#### Операции над User
+
+1. Получить информацию о пользователе
+
+Пример запроса:
+```http request
+GET /api/v1/users/{userId}
+```
+
+Пример ответа:
+```json
+{
+    "id": 1,
+    "firstName": "Kirill",
+    "lastName": "Sotnikov",
+    "patronymic": "Artemovich",
+    "login": "kiril"
+}
+```
+
+2. Создать запись о пользователе
+
+Пример запроса:
+```http request
+POST /api/v1/users
+```
+
+Пример тела запроса:
+```json
+{
+    "firstName": "Kirill",
+    "lastName": "Sotnikov",
+    "patronymic": "Artemovich",
+    "login": "kiril"
+}
+```
+
+Пример ответа:
+```json
+{
+    "id": 1,
+    "firstName": "Kirill",
+    "lastName": "Sotnikov",
+    "patronymic": "Artemovich",
+    "login": "kiril"
+}
+```
+3. Обновить запись о пользователе
+
+Пример запроса:
+```http request
+PUT /api/v1/users/{userId}
+```
+
+Пример тела запроса:
+```json
+{
+    "firstName": "Kirill",
+    "lastName": "Sotnikov",
+    "patronymic": "Nikolaevich",
+    "login": "kiril"
+}
+```
+
+Пример ответа:
+```json
+{
+    "id": 1,
+    "firstName": "Kirill",
+    "lastName": "Sotnikov",
+    "patronymic": "Nikolaevich",
+    "login": "kiril"
+}
+```
+
+4. Удалить запись о пользователе
+
+Пример запроса:
+```http request
+DELETE /api/v1/users/{userId}
+```

@@ -213,7 +213,7 @@ public class AccountController extends HttpServlet {
 
         Account account = accountService.findByNumber(dto.getNumber());
 
-        ArrayList<Integer> transactionIds;
+        ArrayList<Long> transactionIds;
 
         LocalDate startDate = LocalDate.parse(dto.getStartDate());
         LocalDate endDate = LocalDate.parse(dto.getEndDate());
@@ -243,10 +243,12 @@ public class AccountController extends HttpServlet {
 
         ArrayList<Long> transactionIds;
 
-        transactionIds = checkService.findAllTransactions( account);
+        LocalDate start = LocalDate.parse(dto.getStart());
+        LocalDate end = LocalDate.parse(dto.getEnd());
+        transactionIds = checkService.findTransactions(start,end,account);
 
         System.out.println(transactionIds);
-        byte[] pdfBytes = moneyStatementService.createStatement(account, transactionIds);
+        byte[] pdfBytes = moneyStatementService.createStatement(account, transactionIds,start,end);
 
 
         final String title = "statement-" + Instant.now().toEpochMilli();

@@ -29,9 +29,9 @@ public class CheckPostgreRepository implements CheckRepository {
      * @return a list of transaction IDs that meet the criteria.
      */
     @Override
-    public ArrayList<Integer> findTransactions(LocalDate startDate, LocalDate endDate, Account account) {
+    public ArrayList<Long> findTransactions(LocalDate startDate, LocalDate endDate, Account account) {
         Connection connection = connectionManager.getConnection();
-        ArrayList<Integer> intValues = new ArrayList<>();
+        ArrayList<Long> intValues = new ArrayList<>();
         long accountId = account.getId();
 
         String query = "SELECT * FROM transactions WHERE (sender_account = ? OR recipient_account = ?) AND date BETWEEN ? AND ? ";
@@ -43,8 +43,8 @@ public class CheckPostgreRepository implements CheckRepository {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                int intValue = resultSet.getInt("id");
-                intValues.add(intValue);
+                long Value = resultSet.getLong("id");
+                intValues.add(Value);
             }
 
         } catch (SQLException ex) {

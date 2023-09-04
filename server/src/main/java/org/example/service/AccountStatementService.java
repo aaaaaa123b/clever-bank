@@ -15,5 +15,5 @@ public interface AccountStatementService {
      * @param startDate the start date for the statement
      * @param endDate   the end date for the statement
      */
-    byte[] createExtract(Account account, ArrayList<Integer> ids, LocalDate startDate, LocalDate endDate);
+    byte[] createExtract(Account account, ArrayList<Long> ids, LocalDate startDate, LocalDate endDate);
 }

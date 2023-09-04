@@ -62,7 +62,7 @@ class CheckPostgreRepositoryTest {
             when(resultSet.next()).thenReturn(true).thenReturn(false); // Один результат
             when(resultSet.getInt("id")).thenReturn(1);
 
-            List<Integer> transactionIds = checkRepository.findTransactions(startDate, endDate, account);
+            List<Long> transactionIds = checkRepository.findTransactions(startDate, endDate, account);
 
             assertNotNull(transactionIds);
             assertEquals(1, transactionIds.size());
@@ -79,7 +79,7 @@ class CheckPostgreRepositoryTest {
             when(preparedStatement.executeQuery()).thenReturn(resultSet);
             when(resultSet.next()).thenReturn(false);
 
-            List<Integer> transactionIds = checkRepository.findTransactions(startDate, endDate, account);
+            List<Long> transactionIds = checkRepository.findTransactions(startDate, endDate, account);
 
             assertNotNull(transactionIds);
             assertEquals(0, transactionIds.size());

@@ -44,7 +44,7 @@ public class AccountStatementServiceImpl implements AccountStatementService {
      * @param endDate   the end date for the statement
      */
     @Override
-    public byte[] createExtract(Account account, ArrayList<Integer> ids, LocalDate startDate, LocalDate endDate) {
+    public byte[] createExtract(Account account, ArrayList<Long> ids, LocalDate startDate, LocalDate endDate) {
         int senderBankId = account.getBankId();
         Bank senderBank = bankRepository.findById(senderBankId);
 
@@ -85,7 +85,7 @@ public class AccountStatementServiceImpl implements AccountStatementService {
         ));
         System.out.println(extractText);
 
-        for (Integer id : ids) {
+        for (Long id : ids) {
             Transaction transaction = transactionRepository.findById(id);
 
             final String label = switch (transaction.getType()) {

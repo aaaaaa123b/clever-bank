@@ -25,7 +25,7 @@ public interface CheckService {
      * @param account the account for which transactions should be found
      * @return a list of transaction IDs that meet the criteria.
      */
-    ArrayList<Integer> findTransactions(LocalDate startDate, LocalDate endDate, Account account);
+    ArrayList<Long> findTransactions(LocalDate startDate, LocalDate endDate, Account account);
 
     /**
      * Finds all transactions in which the account was involved.

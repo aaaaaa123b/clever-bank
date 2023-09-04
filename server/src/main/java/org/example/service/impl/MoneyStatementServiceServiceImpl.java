@@ -36,7 +36,7 @@ public class MoneyStatementServiceServiceImpl implements MoneyStatementService {
      * @param ids ids that need for statement
      * @return bytes.
      */
-    public byte[] createStatement(Account account, ArrayList<Long> ids) {
+    public byte[] createStatement(Account account, ArrayList<Long> ids, LocalDate start, LocalDate end) {
         BigDecimal deposit = BigDecimal.ZERO;
         BigDecimal withdraw = BigDecimal.ZERO;
 
@@ -47,7 +47,8 @@ public class MoneyStatementServiceServiceImpl implements MoneyStatementService {
         User user = userService.findById(userId);
 
         LocalTime currentTime = LocalTime.ofSecondOfDay(LocalTime.now().getHour());
-        LocalDate currentDate = LocalDate.now();
+
+
 
         for (Long id : ids) {
             Transaction transaction = transactionRepository.findById(id);
@@ -86,8 +87,7 @@ public class MoneyStatementServiceServiceImpl implements MoneyStatementService {
                 senderBank.getName(), user.getFirstName(),
                 user.getLastName(), user.getPatronymic(),
                 account.getNumber(), account.getCurrency(),
-                account.getCreatedDate(),
-                account.getCreatedDate(), currentDate, currentDate, currentTime,
+                account.getCreatedDate(), start, end,account.getCreatedDate(), currentTime,
                 account.getBalance(), deposit, withdraw
         ));
         System.out.println(extractText);

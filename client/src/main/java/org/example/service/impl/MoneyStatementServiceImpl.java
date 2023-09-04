@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.LocalDate;
 
 import static org.example.CleverBankApplication.SERVER_BASE;
 
@@ -20,13 +21,15 @@ public class MoneyStatementServiceImpl implements MoneyStatementService {
      * @param accountNumber number of account object
      */
     @Override
-    public void createStatement(String accountNumber) {
+    public void createStatement(String accountNumber, LocalDate start,LocalDate end) {
         final String message = """
                 {
-                    "number": "%s"
+                    "number": "%s",
+                    "start": "%s",
+                    "end": "%s"
                 }
                 """.formatted(
-                accountNumber
+                accountNumber,start,end
         );
 
         final HttpResponse<byte[]> response = Unirest.post(SERVER_BASE + "/api/v1/users/accounts/money-statement/")

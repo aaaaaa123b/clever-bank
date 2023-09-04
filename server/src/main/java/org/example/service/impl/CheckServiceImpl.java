@@ -74,7 +74,7 @@ public class CheckServiceImpl implements CheckService {
      * @return a list of transaction IDs that meet the criteria.
      */
     @Override
-    public ArrayList<Integer> findTransactions(LocalDate startDate, LocalDate endDate, Account account) {
+    public ArrayList<Long> findTransactions(LocalDate startDate, LocalDate endDate, Account account) {
         return checkRepository.findTransactions(startDate, endDate, account);
     }
 

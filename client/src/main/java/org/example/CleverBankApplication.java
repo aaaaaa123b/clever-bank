@@ -16,6 +16,7 @@ import org.example.service.UserService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class CleverBankApplication {
@@ -193,7 +194,15 @@ public class CleverBankApplication {
                 System.out.println("Введите номер счёта:");
                 final String number = scanner.nextLine();
 
-                moneyStatementService.createStatement(number);
+                System.out.print("Введите начальную дату (в формате yyyy-MM-dd): ");
+                String start= scanner.nextLine();
+
+                System.out.print("Введите конечную дату (в формате yyyy-MM-dd): ");
+                String end = scanner.nextLine();
+
+                LocalDate startDate = LocalDate.parse(start);
+                LocalDate endDate = LocalDate.parse(end);
+                moneyStatementService.createStatement(number,startDate,endDate);
 
                 System.out.println("Money statment сохранена");
 

@@ -52,6 +52,11 @@ public interface AccountService {
 
     Account createAccount(Account account);
 
+    /**
+     * Delete account by account id.
+     *
+     * @param id account ID
+     */
     void deleteById(Long id);
 
     Account updateAccount(Long id, Account account);

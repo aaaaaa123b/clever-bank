@@ -1,12 +1,8 @@
 package org.example.service.impl;
 
-import org.example.model.Account;
 import org.example.model.Transaction;
 import org.example.repository.TransactionRepository;
 import org.example.service.TransactionService;
-
-import java.math.BigDecimal;
-import java.time.LocalTime;
 
 public class TransactionServiceImpl implements TransactionService {
 

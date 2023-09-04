@@ -1,6 +1,5 @@
 package org.example.service.impl;
 
-import org.example.enumeration.TransactionType;
 import org.example.model.Account;
 import org.example.model.Bank;
 import org.example.model.Transaction;
@@ -30,6 +29,13 @@ public class MoneyStatementServiceServiceImpl implements MoneyStatementService {
         this.transactionRepository = transactionRepository;
     }
 
+    /**
+     * Create money statement
+     *
+     * @param account account object
+     * @param ids ids that need for statement
+     * @return bytes.
+     */
     public byte[] createStatement(Account account, ArrayList<Long> ids) {
         BigDecimal deposit = BigDecimal.ZERO;
         BigDecimal withdraw = BigDecimal.ZERO;

@@ -103,7 +103,6 @@ public class AccountStatementServiceImpl implements AccountStatementService {
             extractText.append(transactionText);
         }
 
-//        String result = new String()
         return PdfUtil.toPdf(extractText.toString());
     }
 

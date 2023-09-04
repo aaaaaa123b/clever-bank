@@ -12,7 +12,6 @@ public interface UserService {
      */
     User findById(Long id);
 
-    User save(User user);
 
     /**
      * Creates a new user.
@@ -25,11 +24,27 @@ public interface UserService {
      */
     User addUser(String firstName, String lastName, String patronymic, String login);
 
-    boolean exists(Long id);
-
+    /**
+     * Delete user by user id.
+     *
+     * @param id user ID
+     */
     void deleteById(Long id);
 
+    /**
+     * Add new user.
+     *
+     * @param user object user
+     * @return object user.
+     */
     User addUser(User user);
 
+    /**
+     * Update user by user id
+     *
+     * @param id user ID
+     * @param user object user
+     * @return updatet object user.
+     */
     User updateUser(Long id, User user);
 }

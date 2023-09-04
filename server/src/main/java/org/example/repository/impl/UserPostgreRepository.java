@@ -51,11 +51,6 @@ public class UserPostgreRepository implements UserRepository {
     }
 
 
-    @Override
-    public User save(User user) {
-        return user;
-    }
-
     /**
      * Creates a new user in the database.
      *
@@ -102,6 +97,11 @@ public class UserPostgreRepository implements UserRepository {
         }
     }
 
+    /**
+     * Delete user by user id.
+     *
+     * @param id user ID
+     */
     @Override
     public void deleteById(Long id) {
         Connection connection = connectionManager.getConnection();
@@ -115,6 +115,13 @@ public class UserPostgreRepository implements UserRepository {
         }
     }
 
+    /**
+     * Update user by user id in the database
+     *
+     * @param id user ID
+     * @param user object user
+     * @return updatet object user.
+     */
     @Override
     public User updateUser(Long id, User user) {
         Connection connection = connectionManager.getConnection();

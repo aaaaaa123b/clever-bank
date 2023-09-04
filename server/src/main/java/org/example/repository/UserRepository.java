@@ -12,7 +12,6 @@ public interface UserRepository {
      */
     User findById(Long id);
 
-    User save(User user);
 
     /**
      * Creates a new user in the database.
@@ -25,7 +24,19 @@ public interface UserRepository {
      */
     User addUser(String firstName, String lastName, String patronymic, String login);
 
+    /**
+     * Delete user by user id.
+     *
+     * @param id user ID
+     */
     void deleteById(Long id);
 
+    /**
+     * Update user by user id in the database
+     *
+     * @param id user ID
+     * @param user object user
+     * @return updatet object user.
+     */
     User updateUser(Long id, User user);
 }

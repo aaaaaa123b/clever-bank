@@ -23,7 +23,7 @@ public class AccountServiceImpl implements AccountService {
      * Withdraws money from an account.
      *
      * @param account the account to withdraw funds from
-     * @param cash    the amount of cash to withdraw
+     * @param cash the amount of cash to withdraw
      * @return the updated account object.
      */
     @Override
@@ -61,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
      * Deposits money into an account.
      *
      * @param account the account to deposit funds into
-     * @param cash    the amount of cash to deposit
+     * @param cash the amount of cash to deposit
      * @return the updated account object.
      */
     @Override
@@ -178,7 +178,7 @@ public class AccountServiceImpl implements AccountService {
     /**
      * Update an account in the database.
      *
-     * @param id the account ID
+     * @param id      the account ID
      * @param account new account object
      * @return the account object.
      */

@@ -4,7 +4,6 @@ import org.example.model.User;
 import org.example.repository.UserRepository;
 import org.example.service.UserService;
 
-import java.util.ArrayList;
 
 public class UserServiceImpl implements UserService {
 
@@ -26,10 +25,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
-    @Override
-    public User save(User user) {
-        return userRepository.save(user);
-    }
 
     /**
      * Creates a new user.
@@ -46,21 +41,34 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public boolean exists(Long id) {
-        return findById(id) != null;
-    }
-
+    /**
+     * Delete user by user id.
+     *
+     * @param id user ID
+     */
     @Override
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
 
+    /**
+     * Add new user.
+     *
+     * @param user object user
+     * @return object user.
+     */
     @Override
     public User addUser(User user) {
         return addUser(user.getFirstName(), user.getLastName(), user.getPatronymic(), user.getLogin());
     }
 
+    /**
+     * Update user by user id
+     *
+     * @param id user ID
+     * @param user object user
+     * @return updatet object user.
+     */
     @Override
     public User updateUser(Long id, User user) {
         return userRepository.updateUser(id, user);

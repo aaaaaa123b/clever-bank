@@ -1,9 +1,5 @@
 package org.example.service.impl;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.example.model.Account;
 import org.example.model.Bank;
 import org.example.model.Transaction;
@@ -11,12 +7,8 @@ import org.example.repository.BankRepository;
 import org.example.repository.CheckRepository;
 import org.example.service.CheckService;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class CheckServiceImpl implements CheckService {
     private final BankRepository bankRepository;
@@ -86,6 +78,12 @@ public class CheckServiceImpl implements CheckService {
         return checkRepository.findTransactions(startDate, endDate, account);
     }
 
+    /**
+     * Finds all transactions in which the account was involved.
+     *
+     * @param account the account for which transactions should be found
+     * @return a list of transaction IDs that meet the criteria.
+     */
     @Override
     public ArrayList<Long> findAllTransactions( Account account) {
         return checkRepository.findAllTransactions(account);

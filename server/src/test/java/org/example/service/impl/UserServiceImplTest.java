@@ -44,22 +44,6 @@ class UserServiceImplTest {
     }
 
 
-
-    @Test
-    void save() {
-        User expectedUser = new User();
-        expectedUser.setFirstName("Diana");
-        expectedUser.setLastName("Harlap");
-        expectedUser.setPatronymic("Olegovna");
-        expectedUser.setLogin("diana");
-
-        when(userRepository.save(expectedUser)).thenReturn(expectedUser);
-
-        User savedUser = userService.save(expectedUser);
-        assertNotNull(savedUser);
-        assertEquals(expectedUser, savedUser);
-    }
-
     @Test
     void addUser() {
 
@@ -89,17 +73,4 @@ class UserServiceImplTest {
         assertEquals(login, addedUser.getLogin());
     }
 
-
-    @Test
-    void exists() {
-        Long userId = 1L;
-
-        User existingUser = new User();
-        existingUser.setId(userId);
-
-        when(userRepository.findById(userId)).thenReturn(existingUser);
-
-        boolean userExists = userService.exists(userId);
-        assertTrue(userExists);
-    }
 }

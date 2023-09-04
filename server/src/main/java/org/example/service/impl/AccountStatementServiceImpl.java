@@ -95,7 +95,7 @@ public class AccountStatementServiceImpl implements AccountStatementService {
             };
 
             var transactionText = """
-                    %s             %s                         %s""".formatted(
+                    %6s|             %-40s             %-10s """.formatted(
                     transaction.getDate(), label, transaction.getAmount()
             );
             System.out.println(transactionText);

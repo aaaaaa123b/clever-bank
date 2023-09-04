@@ -23,7 +23,7 @@ public interface TransactionRepository {
     /**
      * Update a transaction in the database.
      *
-     * @param id          the transaction ID
+     * @param id the transaction ID
      * @param transaction new transaction object
      * @return the transaction object.
      */

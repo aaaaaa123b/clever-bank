@@ -50,6 +50,11 @@ public class BankPostgreRepository implements BankRepository {
         }
     }
 
+    /**
+     * Delete bank from the database.
+     *
+     * @param id bank ID
+     */
     @Override
     public void deleteById(Long id) {
         Connection connection = connectionManager.getConnection();
@@ -63,6 +68,12 @@ public class BankPostgreRepository implements BankRepository {
         }
     }
 
+    /**
+     * Creates a bank in the database.
+     *
+     * @param bank the bank object
+     * @return the bank object with the generated ID.
+     */
     @Override
     public Bank create(Bank bank) {
         Connection connection = connectionManager.getConnection();
@@ -90,6 +101,13 @@ public class BankPostgreRepository implements BankRepository {
         }
     }
 
+    /**
+     * Update a bank in the database.
+     *
+     * @param id the bank ID
+     * @param bank new bank object
+     * @return the bank object.
+     */
     @Override
     public Bank update(int id, Bank bank) {
         Connection connection = connectionManager.getConnection();

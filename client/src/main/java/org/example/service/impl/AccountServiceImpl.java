@@ -1,6 +1,5 @@
 package org.example.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import lombok.AllArgsConstructor;
@@ -18,6 +17,14 @@ import static org.example.CleverBankApplication.SERVER_BASE;
 @AllArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
+
+    /**
+     * Metod wich withdraw cash from account.
+     *
+     * @param accountId account ID
+     * @param cash amount of money
+     * @return account object.
+     */
     @Override
     public Account withdrawCash(long accountId, BigDecimal cash) {
         final String message = """
@@ -40,6 +47,13 @@ public class AccountServiceImpl implements AccountService {
         throw new IllegalArgumentException("Deposit was not performed!");
     }
 
+    /**
+     * Metod wich add cash from account.
+     *
+     * @param accountId account ID
+     * @param cash amount of money
+     * @return account object
+     */
     @Override
     public Account addCash(long accountId, BigDecimal cash) {
         final String message = """
@@ -62,6 +76,13 @@ public class AccountServiceImpl implements AccountService {
         throw new IllegalArgumentException("Transfer was not performed!");
     }
 
+    /**
+     * Metod wich transfer cash from account.
+     *
+     * @param source sender account object
+     * @param targer recipient account object
+     * @param cash amount of money
+     */
     @Override
     public void transfer(String source, String targer, BigDecimal cash) {
         final String message = """
@@ -102,6 +123,12 @@ public class AccountServiceImpl implements AccountService {
         throw new IllegalArgumentException("Transfer was not performed!");
     }
 
+    /**
+     * Find account.
+     *
+     * @param id account ID
+     * @return account object.
+     */
     @Override
     public Account findById(long id) {
         final String message = """

@@ -14,7 +14,11 @@ import static org.example.CleverBankApplication.SERVER_BASE;
 
 @AllArgsConstructor
 public class MoneyStatementServiceImpl implements MoneyStatementService {
-
+    /**
+     * Create extract
+     *
+     * @param accountNumber number of account object
+     */
     @Override
     public void createStatement(String accountNumber) {
         final String message = """

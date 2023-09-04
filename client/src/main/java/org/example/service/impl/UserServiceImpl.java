@@ -14,6 +14,12 @@ public class UserServiceImpl implements UserService {
 
     private final ObjectMapper objectMapper;
 
+    /**
+     * Login.
+     *
+     * @param id user id
+     * @return user object.
+     */
     @Override
     public User login(Long id) {
         final String message = """
@@ -32,6 +38,14 @@ public class UserServiceImpl implements UserService {
         throw new IllegalArgumentException("User does not exist!");
     }
 
+    /**
+     * Add user.
+     *
+     * @param firstName user firstname
+     * @param lastName user lastname
+     * @param patronymic user patronymic
+     * @param login user login
+     */
     @Override
     public void addUser(String firstName, String lastName, String patronymic, String login) {
         final String message = """

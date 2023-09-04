@@ -1,15 +1,12 @@
 package org.example.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import lombok.AllArgsConstructor;
-import org.example.model.Account;
 import org.example.service.AccountStatementService;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -17,10 +14,16 @@ import java.time.LocalDate;
 import static org.example.CleverBankApplication.SERVER_BASE;
 
 
-
 @AllArgsConstructor
 public class AccountStatementServiceImpl implements AccountStatementService {
 
+    /**
+     * Create extraxt.
+     *
+     * @param accountNumber number of account
+     * @param startDate the date on which the statement begins
+     * @param endDate the date on which the statement ends
+     */
     @Override
     public void createExtract(String accountNumber, LocalDate startDate, LocalDate endDate) {
 

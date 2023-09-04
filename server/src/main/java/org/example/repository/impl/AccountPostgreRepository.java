@@ -91,7 +91,7 @@ public class AccountPostgreRepository implements AccountRepository {
      * Updates account data in the database.
      *
      * @param connection the database connection
-     * @param account the account object
+     * @param account    the account object
      */
     @Override
     public Account update(Connection connection, Account account) {
@@ -101,10 +101,10 @@ public class AccountPostgreRepository implements AccountRepository {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setBigDecimal(1, account.getBalance());
-            preparedStatement.setString(2,account.getCurrency());
-            preparedStatement.setString(3,account.getNumber());
-            preparedStatement.setInt(4,account.getUserId());
-            preparedStatement.setInt(5,account.getBankId());
+            preparedStatement.setString(2, account.getCurrency());
+            preparedStatement.setString(3, account.getNumber());
+            preparedStatement.setInt(4, account.getUserId());
+            preparedStatement.setInt(5, account.getBankId());
             preparedStatement.setDate(6, (Date) account.getCreatedDate());
             preparedStatement.setLong(7, id);
 
@@ -122,6 +122,12 @@ public class AccountPostgreRepository implements AccountRepository {
 
     }
 
+    /**
+     * Create an account in the database.
+     *
+     * @param account account object
+     * @return account object.
+     */
     @Override
     public Account create(Account account) {
         Connection connection = connectionManager.getConnection();
@@ -154,6 +160,11 @@ public class AccountPostgreRepository implements AccountRepository {
         }
     }
 
+    /**
+     * Delete an account from the database.
+     *
+     * @param id the account ID
+     */
     @Override
     public void delete(Long id) {
         Connection connection = connectionManager.getConnection();
@@ -167,11 +178,38 @@ public class AccountPostgreRepository implements AccountRepository {
         }
     }
 
+    /**
+     * Update an account in the database.
+     *
+     * @param id the account ID
+     * @param account new account object
+     * @return the account object.
+     */
     @Override
     public Account update(Long id, Account account) {
         Connection connection = connectionManager.getConnection();
 
-        account.setId(id);
-        return update(connection, account);
+        String query = "UPDATE accounts SET balance = ?, currency = ?,number=?,user_id=?,bank_id=?,created_date=? WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setBigDecimal(1, account.getBalance());
+            preparedStatement.setString(2, account.getCurrency());
+            preparedStatement.setString(3, account.getNumber());
+            preparedStatement.setInt(4, account.getUserId());
+            preparedStatement.setInt(5, account.getBankId());
+            preparedStatement.setDate(6, (Date) account.getCreatedDate());
+            preparedStatement.setLong(7, id);
+
+            int result = preparedStatement.executeUpdate();
+
+            if (result == 0) {
+                String message = "Пользователь с id %d не найден.".formatted(id);
+                throw new EntityNotFoundException(message);
+            }
+
+            return account;
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка при обработке SQL-запроса", e);
+        }
     }
 }

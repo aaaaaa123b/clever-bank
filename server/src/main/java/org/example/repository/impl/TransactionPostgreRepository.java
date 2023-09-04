@@ -4,6 +4,7 @@ import org.example.enumeration.TransactionType;
 import org.example.exception.EntityNotFoundException;
 import org.example.model.Account;
 import org.example.model.Transaction;
+import org.example.model.User;
 import org.example.repository.AccountRepository;
 import org.example.repository.TransactionRepository;
 import org.example.util.ConnectionManager;
@@ -51,7 +52,7 @@ public class TransactionPostgreRepository implements TransactionRepository {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     long generatedId = resultSet.getLong("id");
-                    transaction.setId( generatedId);
+                    transaction.setId(generatedId);
                     System.out.println("Generated ID: " + generatedId);
                     return transaction;
                 } else {
@@ -111,4 +112,48 @@ public class TransactionPostgreRepository implements TransactionRepository {
         }
     }
 
+    /**
+     * Update a transaction in the database.
+     *
+     * @param id the transaction ID
+     * @param transaction new transaction object
+     * @return the transaction object.
+     */
+    @Override
+    public Transaction update(Long id, Transaction transaction) {
+        Connection connection = connectionManager.getConnection();
+
+        String query = "UPDATE transactions SET time=?, type=?, sender_account=?,recipient_account=?,amount=?,date=? WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setTime(1, transaction.getTime());
+            preparedStatement.setString(2, transaction.getType().name());
+
+            Long recepientAccountId = Optional.ofNullable(transaction.getRecipientAccount())
+                    .map(Account::getId)
+                    .orElse(null);
+
+            Long senderAccountId = Optional.ofNullable(transaction.getSenderAccount())
+                    .map(Account::getId)
+                    .orElse(null);
+
+            preparedStatement.setObject(3, senderAccountId);
+            preparedStatement.setObject(4, recepientAccountId);
+            preparedStatement.setBigDecimal(5, transaction.getAmount());
+            preparedStatement.setDate(6, transaction.getDate());
+            preparedStatement.setLong(7, id);
+            int result = preparedStatement.executeUpdate();
+
+            if (result == 0) {
+                String message = "Пользователь с id %d не найден.".formatted(id);
+                throw new EntityNotFoundException(message);
+            }
+
+
+            return transaction;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка при обработке SQL-запроса", e);
+        }
+    }
 }

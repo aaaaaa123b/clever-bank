@@ -248,7 +248,6 @@ public class AccountController extends HttpServlet {
         System.out.println(transactionIds);
         byte[] pdfBytes = moneyStatementService.createStatement(account, transactionIds);
 
-//        final String body = objectMapper.valueToTree(account).toPrettyString();
 
         final String title = "statement-" + Instant.now().toEpochMilli();
         sendPdf(title, pdfBytes, response);

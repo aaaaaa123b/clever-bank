@@ -10,10 +10,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.config.DependencyProvider;
 import org.example.model.Account;
 import org.example.model.Bank;
+import org.example.model.Transaction;
 import org.example.model.User;
 import org.example.repository.BankRepository;
+import org.example.repository.TransactionRepository;
 import org.example.service.AccountService;
-import org.example.service.TransactionService;
 import org.example.service.UserService;
 
 import java.io.IOException;
@@ -40,10 +41,16 @@ public class CrudController extends HttpServlet {
     public static final String UPDATE_BANK = API_PREFIX + "/banks/(\\d+)";
     public static final String DELETE_BANK = API_PREFIX + "/banks/(\\d+)";
 
+    public static final String CREATE_TRANSACTION = API_PREFIX + "/transactions$";
+    public static final String GET_TRANSACTION = API_PREFIX + "/transactions/(\\d+)";
+    public static final String UPDATE_TRANSACTION = API_PREFIX + "/transactions/(\\d+)";
+    public static final String DELETE_TRANSACTION = API_PREFIX + "/transactions/(\\d+)";
+
     private ObjectMapper objectMapper;
     private UserService userService;
     private AccountService accountService;
     private BankRepository bankRepository;
+    private TransactionRepository transactionRepository;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -52,6 +59,7 @@ public class CrudController extends HttpServlet {
         userService = (UserService) DependencyProvider.get().forClass(UserService.class);
         accountService = (AccountService) DependencyProvider.get().forClass(AccountService.class);
         bankRepository = (BankRepository) DependencyProvider.get().forClass(BankRepository.class);
+        transactionRepository = (TransactionRepository) DependencyProvider.get().forClass(TransactionRepository.class);
     }
 
     @Override
@@ -93,6 +101,18 @@ public class CrudController extends HttpServlet {
                 response.sendError(400);
             }
         }
+
+        if (path.matches(GET_TRANSACTION)) {
+            Pattern pattern = Pattern.compile(GET_TRANSACTION);
+            Matcher matcher = pattern.matcher(path);
+
+            if (matcher.find()) {
+                long id = Long.parseLong(matcher.group(1));
+                getTransaction(id, response);
+            } else {
+                response.sendError(400);
+            }
+        }
     }
 
     @Override
@@ -121,7 +141,15 @@ public class CrudController extends HttpServlet {
 
             getBank(bank.getId(), response);
         }
+
+        if (path.matches(CREATE_TRANSACTION)) {
+            Transaction transaction = objectMapper.readValue(message, Transaction.class);
+            transaction = transactionRepository.create(transaction);
+
+            getTransaction(transaction.getId(), response);
+        }
     }
+
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -166,12 +194,28 @@ public class CrudController extends HttpServlet {
             Matcher matcher = pattern.matcher(path);
 
             if (matcher.find()) {
-                Integer id = Integer.valueOf(matcher.group(1));
+                int id = Integer.parseInt(matcher.group(1));
 
                 Bank bank = objectMapper.readValue(message, Bank.class);
                 bank = bankRepository.update(id, bank);
 
                 getBank(bank.getId(), response);
+            } else {
+                response.sendError(400);
+            }
+        }
+
+        if (path.matches(UPDATE_TRANSACTION)) {
+            Pattern pattern = Pattern.compile(UPDATE_TRANSACTION);
+            Matcher matcher = pattern.matcher(path);
+
+            if (matcher.find()) {
+                long id = Integer.parseInt(matcher.group(1));
+
+                Transaction transaction = objectMapper.readValue(message, Transaction.class);
+                transaction = transactionRepository.update(id, transaction);
+
+                getTransaction(transaction.getId(), response);
             } else {
                 response.sendError(400);
             }
@@ -261,6 +305,12 @@ public class CrudController extends HttpServlet {
     private void getBank(Integer id, HttpServletResponse response) throws JsonProcessingException {
         final Bank bank = bankRepository.findById(id);
         final String body = objectMapper.writeValueAsString(bank);
+        send(body, response);
+    }
+
+    private void getTransaction(long id, HttpServletResponse response) throws JsonProcessingException {
+        final Transaction transaction = transactionRepository.findById(id);
+        final String body = objectMapper.writeValueAsString(transaction);
         send(body, response);
     }
 }

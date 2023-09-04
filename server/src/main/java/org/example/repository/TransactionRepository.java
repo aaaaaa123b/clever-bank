@@ -19,4 +19,13 @@ public interface TransactionRepository {
      * @return the transaction object.
      */
     Transaction findById(long id);
+
+    /**
+     * Update a transaction in the database.
+     *
+     * @param id          the transaction ID
+     * @param transaction new transaction object
+     * @return the transaction object.
+     */
+    Transaction update(Long id, Transaction transaction);
 }

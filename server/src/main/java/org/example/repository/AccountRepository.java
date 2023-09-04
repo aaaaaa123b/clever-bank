@@ -26,13 +26,31 @@ public interface AccountRepository {
      * Updates account data in the database.
      *
      * @param connection the database connection
-     * @param account the account object
+     * @param account    the account object
      */
     Account update(Connection connection, Account account);
 
+    /**
+     * Create an account in the database.
+     *
+     * @param account account object
+     * @return account object.
+     */
     Account create(Account account);
 
+    /**
+     * Delete an account from the database.
+     *
+     * @param id the account ID
+     */
     void delete(Long id);
 
+    /**
+     * Update an account in the database.
+     *
+     * @param id the account ID
+     * @param account new account object
+     * @return the account object.
+     */
     Account update(Long id, Account account);
 }

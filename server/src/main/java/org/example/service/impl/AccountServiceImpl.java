@@ -14,16 +14,16 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final ConnectionManager connectionManager;
 
-    public AccountServiceImpl(AccountRepository accountRepository,ConnectionManager connectionManager) {
-        this.accountRepository=accountRepository;
-        this.connectionManager=connectionManager;
+    public AccountServiceImpl(AccountRepository accountRepository, ConnectionManager connectionManager) {
+        this.accountRepository = accountRepository;
+        this.connectionManager = connectionManager;
     }
 
     /**
      * Withdraws money from an account.
      *
      * @param account the account to withdraw funds from
-     * @param cash the amount of cash to withdraw
+     * @param cash    the amount of cash to withdraw
      * @return the updated account object.
      */
     @Override
@@ -31,12 +31,12 @@ public class AccountServiceImpl implements AccountService {
         if (account.getBalance().compareTo(cash) < 0) {
             throw new NotEnoughMoneyException();
         }
-        try (Connection connection = connectionManager.getConnection()){
+        try (Connection connection = connectionManager.getConnection()) {
             connection.setAutoCommit(false);
 
             try {
                 account.setBalance(account.getBalance().subtract(cash));
-                accountRepository.update(connection,account);
+                accountRepository.update(connection, account);
 
                 connection.commit();
 
@@ -61,17 +61,17 @@ public class AccountServiceImpl implements AccountService {
      * Deposits money into an account.
      *
      * @param account the account to deposit funds into
-     * @param cash the amount of cash to deposit
+     * @param cash    the amount of cash to deposit
      * @return the updated account object.
      */
     @Override
     public Account addCash(Account account, BigDecimal cash) {
-        try (Connection connection = connectionManager.getConnection()){
+        try (Connection connection = connectionManager.getConnection()) {
             connection.setAutoCommit(false);
 
             try {
                 account.setBalance(account.getBalance().add(cash));
-                accountRepository.update(connection,account);
+                accountRepository.update(connection, account);
 
                 connection.commit();
 
@@ -98,22 +98,22 @@ public class AccountServiceImpl implements AccountService {
      *
      * @param source the sender's account
      * @param target the recipient's account
-     * @param cash the amount of cash to transfer
+     * @param cash   the amount of cash to transfer
      * @return the updated sender's account object.
      */
     @Override
     public Account transfer(Account source, Account target, BigDecimal cash) {
-        try (Connection connection = connectionManager.getConnection()){
+        try (Connection connection = connectionManager.getConnection()) {
             connection.setAutoCommit(false);
 
             try {
-            source.setBalance(source.getBalance().subtract(cash));
-            target.setBalance(target.getBalance().add(cash));
+                source.setBalance(source.getBalance().subtract(cash));
+                target.setBalance(target.getBalance().add(cash));
 
-            accountRepository.update(connection, source);
-            accountRepository.update(connection, target);
+                accountRepository.update(connection, source);
+                accountRepository.update(connection, target);
 
-            connection.commit();
+                connection.commit();
 
             } catch (SQLException e) {
                 //throw new RuntimeException("Ошибка при обработке SQL-запроса", e);
@@ -154,16 +154,34 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findByNumber(number);
     }
 
+    /**
+     * Create an account in the database.
+     *
+     * @param account account object
+     * @return account object.
+     */
     @Override
     public Account createAccount(Account account) {
         return accountRepository.create(account);
     }
 
+    /**
+     * Delete an account from the database.
+     *
+     * @param id the account ID
+     */
     @Override
     public void deleteById(Long id) {
         accountRepository.delete(id);
     }
 
+    /**
+     * Update an account in the database.
+     *
+     * @param id the account ID
+     * @param account new account object
+     * @return the account object.
+     */
     @Override
     public Account updateAccount(Long id, Account account) {
         return accountRepository.update(id, account);

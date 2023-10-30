@@ -46,7 +46,6 @@ public class AuthController extends HttpServlet {
 
         if (path.matches(SIGNUP_PATTERN)) {
             doSignup(message, response);
-            return;
         }
     }
 

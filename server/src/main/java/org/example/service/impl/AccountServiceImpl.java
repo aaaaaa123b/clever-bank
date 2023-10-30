@@ -42,7 +42,6 @@ public class AccountServiceImpl implements AccountService {
 
             } catch (SQLException e) {
                 try {
-
                     System.out.println("Transaction is being rolled back.");
                     connection.rollback();
                 } catch (Exception ex) {
@@ -64,6 +63,7 @@ public class AccountServiceImpl implements AccountService {
      * @param cash the amount of cash to deposit
      * @return the updated account object.
      */
+
     @Override
     public Account addCash(Account account, BigDecimal cash) {
         try (Connection connection = connectionManager.getConnection()) {

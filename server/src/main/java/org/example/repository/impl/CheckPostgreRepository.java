@@ -72,7 +72,7 @@ public class CheckPostgreRepository implements CheckRepository {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                long id = resultSet.getInt("id");
+                long id = resultSet.getLong("id");
                 ids.add(id);
             }
 

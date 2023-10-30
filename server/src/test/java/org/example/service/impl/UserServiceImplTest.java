@@ -2,75 +2,95 @@ package org.example.service.impl;
 
 import org.example.model.User;
 import org.example.repository.UserRepository;
-import org.example.repository.impl.UserPostgreRepository;
-import org.example.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class UserServiceImplTest {
-    @Mock
-    private UserRepository userRepository;
+
+    @InjectMocks
+    private UserServiceImpl userService;
 
     @Mock
-    private UserService userService;
+    private UserRepository userRepository;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-
-        userService = new UserServiceImpl(userRepository);
     }
+
 
     @Test
     void findById() {
         Long userId = 1L;
-        User expectedUser = new User();
-        expectedUser.setId(userId);
-        expectedUser.setFirstName("Diana");
-        expectedUser.setLastName("Harlap");
-        expectedUser.setPatronymic("Olegovna");
-        expectedUser.setLogin("diana");
-
-        when(userRepository.findById(userId)).thenReturn(expectedUser);
-
-        User actualUser = userRepository.findById(userId);
-        assertNotNull(actualUser);
-        assertEquals(expectedUser, actualUser);
+        userService.findById(userId);
+        verify(userRepository).findById(userId);
     }
 
 
     @Test
-    void addUser() {
-
+    void addUserWithParameters() {
         String firstName = "Diana";
         String lastName = "Harlap";
         String patronymic = "Olegovna";
         String login = "diana";
 
-        User newUser = new User();
-        newUser.setId(10L);
-        newUser.setFirstName(firstName);
-        newUser.setLastName(lastName);
-        newUser.setPatronymic(patronymic);
-        newUser.setLogin(login);
+        userService.addUser(firstName, lastName, patronymic, login);
+        verify(userRepository).addUser(firstName, lastName, patronymic, login);
+
+    }
 
 
-        when(userRepository.addUser(firstName, lastName, patronymic, login)).thenReturn(newUser);
+    @Test
+    public void testAddUserWithUserObject() {
+        User user = new User();
+        user.setFirstName("Diana");
+        user.setLastName("Harlap");
+        user.setPatronymic("Olegovna");
+        user.setLogin("diana");
 
-        userService= new UserServiceImpl(userRepository);
-        User addedUser = userService.addUser(firstName, lastName, patronymic, login);
+        User expectedUser = new User();
+        expectedUser.setId(1L);
+        expectedUser.setFirstName("Diana");
+        expectedUser.setLastName("Harlap");
+        expectedUser.setPatronymic("Olegovna");
+        expectedUser.setLogin("diana");
 
-        assertNotNull(addedUser);
-        assertEquals(newUser.getId(), addedUser.getId());
-        assertEquals(firstName, addedUser.getFirstName());
-        assertEquals(lastName, addedUser.getLastName());
-        assertEquals(patronymic, addedUser.getPatronymic());
-        assertEquals(login, addedUser.getLogin());
+        when(userRepository.addUser("Diana", "Harlap", "Olegovna", "diana")).thenReturn(expectedUser);
+
+        User addedUser = userService.addUser(user);
+
+        assertEquals(expectedUser, addedUser);
+    }
+
+    @Test
+    public void testDeleteUserById() {
+        Long userId = 3L;
+
+        userService.deleteById(userId);
+
+        verify(userRepository).deleteById(userId);
+    }
+
+    @Test
+    public void testUpdateUser() {
+        Long userId = 4L;
+        User updatedUser = new User();
+        updatedUser.setId(userId);
+
+        when(userRepository.updateUser(userId, updatedUser)).thenReturn(updatedUser);
+
+        User updated = userService.updateUser(userId, updatedUser);
+
+        verify(userRepository).updateUser(userId, updatedUser);
+
+        assertEquals(userId, updated.getId());
     }
 
 }

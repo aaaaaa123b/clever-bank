@@ -133,8 +133,8 @@ public class AccountPostgreRepository implements AccountRepository {
         Connection connection = connectionManager.getConnection();
         final String query = "INSERT INTO accounts (balance, currency, number, user_id, bank_id, created_date) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
 
-        try (
-                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
 
             preparedStatement.setBigDecimal(1, account.getBalance());
             preparedStatement.setString(2, account.getCurrency());

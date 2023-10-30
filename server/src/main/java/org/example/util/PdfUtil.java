@@ -28,7 +28,7 @@ public class PdfUtil {
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
             contentStream.setFont(customFont, 10);
 
-            float yPosition = 750; // Initial y-position
+            float yPosition = 750;
 
             Charset windows1251Charset = Charset.forName("Windows-1251");
             byte[] windows1251Bytes = windows1251.getBytes(windows1251Charset);

@@ -36,7 +36,7 @@ public class MoneyStatementServiceServiceImpl implements MoneyStatementService {
      * @param ids ids that need for statement
      * @return bytes.
      */
-    public byte[] createStatement(Account account, ArrayList<Long> ids, LocalDate start, LocalDate end) {
+    public StringBuilder createStringStatement(Account account, ArrayList<Long> ids, LocalDate start, LocalDate end) {
         BigDecimal deposit = BigDecimal.ZERO;
         BigDecimal withdraw = BigDecimal.ZERO;
 
@@ -92,7 +92,10 @@ public class MoneyStatementServiceServiceImpl implements MoneyStatementService {
         ));
         System.out.println(extractText);
 
-        return PdfUtil.toPdf(extractText.toString());
+        return extractText;
+    }
+    public byte[] createStatement(StringBuilder statement){
+        return PdfUtil.toPdf(statement.toString());
     }
 
     private BigDecimal getOperation(Transaction transaction, Long id, BigDecimal withdraw, BigDecimal deposit) {

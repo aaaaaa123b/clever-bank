@@ -1,15 +1,11 @@
 package org.example.repository.impl;
 
 import org.example.model.Account;
-import org.example.repository.AccountRepository;
-import org.example.repository.CheckRepository;
-import org.example.repository.TransactionRepository;
 import org.example.util.ConnectionManager;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.sql.Connection;
@@ -18,88 +14,113 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class CheckPostgreRepositoryTest {
 
-        @Mock
-        private ConnectionManager connectionManager;
-        @Mock
-        private Connection connection;
-        @Mock
-        private PreparedStatement preparedStatement;
-        @Mock
-        private ResultSet resultSet;
+    @Mock
+    private ConnectionManager connectionManager;
+    @Mock
+    private Connection connection;
+    @Mock
+    private PreparedStatement preparedStatement;
+    @Mock
+    private ResultSet resultSet;
 
-        private TransactionRepository transactionRepository;
-        private AccountRepository accountRepository;
-        private CheckRepository checkRepository;
+    @InjectMocks
+    private CheckPostgreRepository checkRepository;
 
-        @BeforeEach
-        public void setUp() throws SQLException {
-            MockitoAnnotations.openMocks(this);
-            accountRepository = new AccountPostgreRepository(connectionManager);
-            transactionRepository = new TransactionPostgreRepository(connectionManager,accountRepository);
-            checkRepository = new CheckPostgreRepository(connectionManager);
+    @BeforeEach
+    void setUp() throws SQLException {
+        MockitoAnnotations.openMocks(this);
 
-            when(connectionManager.getConnection()).thenReturn(connection);
-            when(connection.prepareStatement(Mockito.anyString())).thenReturn(preparedStatement);
-        }
+        when(connectionManager.getConnection()).thenReturn(connection);
+        when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
 
-        @Test
-        void findTransactions() throws SQLException {
-            LocalDate startDate = LocalDate.of(2023, 9, 1);
-            LocalDate endDate = LocalDate.of(2023, 9, 4);
-            Account account = new Account();
-            account.setId(1L);
-
-            when(preparedStatement.executeQuery()).thenReturn(resultSet);
-            when(resultSet.next()).thenReturn(true).thenReturn(false); // Один результат
-            when(resultSet.getInt("id")).thenReturn(1);
-
-            List<Long> transactionIds = checkRepository.findTransactions(startDate, endDate, account);
-
-            assertNotNull(transactionIds);
-            assertEquals(1, transactionIds.size());
-            assertEquals(1, transactionIds.get(0));
-        }
-
-        @Test
-        void testFindTransactions_NoTransactions() throws SQLException {
-            LocalDate startDate = LocalDate.of(2023, 9, 1);
-            LocalDate endDate = LocalDate.of(2023, 9, 4);
-            Account account = new Account();
-            account.setId(1L);
-
-            when(preparedStatement.executeQuery()).thenReturn(resultSet);
-            when(resultSet.next()).thenReturn(false);
-
-            List<Long> transactionIds = checkRepository.findTransactions(startDate, endDate, account);
-
-            assertNotNull(transactionIds);
-            assertEquals(0, transactionIds.size());
-        }
-
-        @Test
-        void testFindTransactions_SQLException() throws SQLException {
-            LocalDate startDate = LocalDate.of(2023, 9, 1);
-            LocalDate endDate = LocalDate.of(2023, 9, 4);
-            Account account = new Account();
-            account.setId(1L);
-
-            when(preparedStatement.executeQuery()).thenThrow(new SQLException("SQL Error"));
-
-            RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-                checkRepository.findTransactions(startDate, endDate, account);
-            });
-
-            assertTrue(exception.getCause() instanceof SQLException);
-
-        }
     }
+
+    @Test
+    void testFindTransactionsSuccess() throws SQLException {
+        LocalDate startDate = LocalDate.of(2023, 1, 1);
+        LocalDate endDate = LocalDate.of(2023, 12, 31);
+        long accountId = 1L;
+
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true, true, false);
+        when(resultSet.getLong("id")).thenReturn(1L, 2L);
+
+        Account account = new Account();
+        account.setId(accountId);
+
+        ArrayList<Long> result = checkRepository.findTransactions(startDate, endDate, account);
+
+        verify(preparedStatement, times(1)).setLong(1, accountId);
+        verify(preparedStatement, times(1)).setLong(2, accountId);
+        verify(preparedStatement, times(1)).setObject(3, startDate);
+        verify(preparedStatement, times(1)).setObject(4, endDate);
+        verify(preparedStatement, times(1)).executeQuery();
+
+        assertEquals(2, result.size());
+        assertTrue(result.contains(1L));
+        assertTrue(result.contains(2L));
+    }
+
+
+    @Test
+    void testFindTransactions_SQLException() throws SQLException {
+        LocalDate startDate = LocalDate.of(2023, 9, 1);
+        LocalDate endDate = LocalDate.of(2023, 9, 4);
+        Account account = new Account();
+        account.setId(1L);
+
+        when(preparedStatement.executeQuery()).thenThrow(new SQLException("SQL Error"));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            checkRepository.findTransactions(startDate, endDate, account);
+        });
+
+        assertTrue(exception.getCause() instanceof SQLException);
+
+    }
+
+    @Test
+    void testFindAllTransactionsSuccess() throws SQLException {
+        long accountId = 1L;
+
+        when(preparedStatement.executeQuery()).thenReturn(resultSet);
+        when(resultSet.next()).thenReturn(true, true, false);
+        when(resultSet.getLong("id")).thenReturn(1L, 2L);
+
+        Account account = new Account();
+        account.setId(accountId);
+
+        ArrayList<Long> result = checkRepository.findAllTransactions(account);
+
+        verify(preparedStatement, times(1)).setLong(1, accountId);
+        verify(preparedStatement, times(1)).setLong(2, accountId);
+        verify(preparedStatement, times(1)).executeQuery();
+
+        assertEquals(2, result.size());
+        assertTrue(result.contains(1L));
+        assertTrue(result.contains(2L));
+    }
+
+    @Test
+    void testFindAllTransactionsSQLException() throws SQLException {
+        long accountId = 1L;
+        Account account = new Account();
+        account.setId(accountId);
+
+        when(preparedStatement.executeQuery()).thenThrow(new SQLException("Database error"));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            checkRepository.findAllTransactions(account);
+        });
+
+        assertTrue(exception.getCause() instanceof SQLException);
+    }
+
+}
 

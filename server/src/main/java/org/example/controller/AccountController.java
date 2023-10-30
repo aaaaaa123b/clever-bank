@@ -221,7 +221,7 @@ public class AccountController extends HttpServlet {
         transactionIds = checkService.findTransactions(startDate, endDate, account);
 
         System.out.println(transactionIds);
-        byte[] pdfBytes = accountStatementService.createExtract(account, transactionIds, startDate, endDate);
+        byte[] pdfBytes = accountStatementService.createExtract(accountStatementService.createStringExtract(account, transactionIds, startDate, endDate));
 
 //        final String body = objectMapper.valueToTree(account).toPrettyString();
 
@@ -248,7 +248,7 @@ public class AccountController extends HttpServlet {
         transactionIds = checkService.findTransactions(start,end,account);
 
         System.out.println(transactionIds);
-        byte[] pdfBytes = moneyStatementService.createStatement(account, transactionIds,start,end);
+        byte[] pdfBytes = moneyStatementService.createStatement(moneyStatementService.createStringStatement(account, transactionIds,start,end));
 
 
         final String title = "statement-" + Instant.now().toEpochMilli();

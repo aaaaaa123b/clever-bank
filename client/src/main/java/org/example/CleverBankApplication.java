@@ -21,7 +21,7 @@ import java.util.Scanner;
 
 public class CleverBankApplication {
 
-    public static final String SERVER_BASE = "http://localhost:8080/CleverBank_1_0_SNAPSHOT_war";
+    public static final String SERVER_BASE = "http://localhost:8080";
 
     final ApplicationContext context = new ApplicationContext();
     final Scanner scanner = new Scanner(System.in);

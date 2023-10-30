@@ -44,7 +44,7 @@ public class AccountStatementServiceImpl implements AccountStatementService {
      * @param endDate   the end date for the statement
      */
     @Override
-    public byte[] createExtract(Account account, ArrayList<Long> ids, LocalDate startDate, LocalDate endDate) {
+    public StringBuilder createStringExtract(Account account, ArrayList<Long> ids, LocalDate startDate, LocalDate endDate) {
         int senderBankId = account.getBankId();
         Bank senderBank = bankRepository.findById(senderBankId);
 
@@ -103,7 +103,11 @@ public class AccountStatementServiceImpl implements AccountStatementService {
             extractText.append(transactionText);
         }
 
-        return PdfUtil.toPdf(extractText.toString());
+        return extractText;
+    }
+
+    public byte[] createExtract(StringBuilder extract){
+        return PdfUtil.toPdf(extract.toString());
     }
 
     private String getTransferMessage(Transaction transaction, Long id) {

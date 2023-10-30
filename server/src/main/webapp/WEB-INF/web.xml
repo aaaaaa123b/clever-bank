@@ -25,16 +25,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>HelpController</servlet-name>
-        <servlet-class>org.example.controller.HelpController</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>HelpController</servlet-name>
-        <url-pattern>/api/v1/help/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>CrudController</servlet-name>
         <servlet-class>org.example.controller.CrudController</servlet-class>
         <load-on-startup>1</load-on-startup>

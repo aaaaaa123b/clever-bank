@@ -248,7 +248,8 @@ public class AccountController extends HttpServlet {
         transactionIds = checkService.findTransactions(start,end,account);
 
         System.out.println(transactionIds);
-        byte[] pdfBytes = moneyStatementService.createStatement(moneyStatementService.createStringStatement(account, transactionIds,start,end));
+        final StringBuilder builder = moneyStatementService.createStringStatement(account, transactionIds,start,end);
+        byte[] pdfBytes = moneyStatementService.createStatement(builder);
 
 
         final String title = "statement-" + Instant.now().toEpochMilli();

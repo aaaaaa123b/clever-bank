@@ -1,24 +1,12 @@
 package org.example.service.provider;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.experimental.UtilityClass;
 import org.example.model.User;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+@UtilityClass
 public class UserProvider {
 
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String patronymic;
-    private String login;
-
-    public User createExampleUser() {
+    public static User createExampleUser() {
         User user = new User();
         user.setId(1L);
         user.setLogin("abc");

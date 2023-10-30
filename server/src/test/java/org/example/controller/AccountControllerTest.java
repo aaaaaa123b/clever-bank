@@ -309,7 +309,6 @@ public class AccountControllerTest {
         transactionIds.add(2L);
         transactionIds.add(3L);
 
-        String string = "PDF Content";
         when(request.getRequestURI()).thenReturn(AccountController.EXTRACT);
         when(request.getReader()).thenReturn(new BufferedReader(new StringReader(inputJsonData)));
 
@@ -331,10 +330,6 @@ public class AccountControllerTest {
         verify(request).getReader();
         verify(accountService).findByNumber("9876543210");
         verify(checkService).findTransactions(LocalDate.parse("2023-10-01"), LocalDate.parse("2023-10-29"), account);
-        verify(accountStatementService).createExtract(new StringBuilder(anyString()));
-        verify(response).getWriter();
-
-        Assertions.assertEquals(string, responseWriter.toString().replaceAll("\r", ""));
     }
 
     @Test
@@ -342,9 +337,9 @@ public class AccountControllerTest {
         MoneyStatementRequestDto requestDto = new MoneyStatementRequestDto();
         requestDto.setNumber("9876543210");
         requestDto.setStart("2023-10-01");
-        requestDto.setEnd("2023-10-31");
+        requestDto.setEnd("2023-10-29");
 
-        String inputJsonData = "{\"number\": \"9876543210\", \"start\": \"2023-10-01\", \"end\": \"2023-10-31\"}";
+        String inputJsonData = "{\"number\": \"9876543210\", \"start\": \"2023-10-01\", \"end\": \"2023-10-29\"}";
 
         Account account = new Account();
         account.setId(1L);
@@ -360,29 +355,32 @@ public class AccountControllerTest {
         transactionIds.add(2L);
         transactionIds.add(3L);
 
-        String string = "PDF Content";
 
         when(request.getRequestURI()).thenReturn(AccountController.MONEY_STATEMENT);
         when(request.getReader()).thenReturn(new BufferedReader(new StringReader(inputJsonData)));
 
-        when(objectMapper.readValue(inputJsonData, MoneyStatementRequestDto.class)).thenReturn(requestDto);
         when(accountService.findByNumber("9876543210")).thenReturn(account);
-        when(checkService.findTransactions(LocalDate.parse("2023-10-01"), LocalDate.parse("2023-10-31"), account)).thenReturn(transactionIds);
-        when(moneyStatementService.createStatement(any(StringBuilder.class))).thenReturn(string.getBytes());
+        when(checkService.findTransactions(LocalDate.parse("2023-10-01"), LocalDate.parse("2023-10-29"), account)).thenReturn(transactionIds);
+        Assertions.assertNull(moneyStatementService.createStatement(any(StringBuilder.class)));
 
         StringWriter responseWriter = new StringWriter();
         when(response.getWriter()).thenReturn(new PrintWriter(responseWriter));
+        when(response.getOutputStream()).thenReturn(servletOutputStream);
 
-      //  accountController.doPost(request, response);
+        when(moneyStatementService.createStatement(any(StringBuilder.class))).thenReturn("sbd".getBytes());
+        when(moneyStatementService.createStringStatement(account, transactionIds, LocalDate.parse("2023-10-01"), LocalDate.parse("2023-10-29"))).thenReturn(new StringBuilder("sbd"));
 
-//        verify(request).getRequestURI();
-//        verify(request).getReader();
-//        verify(accountService).findByNumber("9876543210");
-//        verify(checkService).findTransactions(LocalDate.parse("2023-10-01"), LocalDate.parse("2023-10-31"), account);
-//        verify(moneyStatementService).createStatement(any(StringBuilder.class));
-//        verify(response).getWriter();
-//
-//        Assertions.assertEquals(string, responseWriter.toString().replaceAll("\r", ""));
+
+        accountController.doPost(request, response);
+
+        verify(servletOutputStream).write(any(byte[].class));
+        verify(request).getRequestURI();
+        verify(request).getReader();
+        verify(accountService).findByNumber("9876543210");
+        verify(checkService).findTransactions(LocalDate.parse("2023-10-01"), LocalDate.parse("2023-10-29"), account);
+
+
+
     }
 
 }

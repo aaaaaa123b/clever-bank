@@ -1,4 +1,10 @@
 .gradle
+server/build.gradle
+server/.idea
+server/build
+server/target
+server/out
+workspace.xml
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/

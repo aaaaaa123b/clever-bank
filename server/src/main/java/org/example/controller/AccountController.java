@@ -222,12 +222,8 @@ public class AccountController extends HttpServlet {
         transactionIds = checkService.findTransactions(startDate, endDate, account);
 
         System.out.println(transactionIds);
-        // todo restore
-//        final StringBuilder builder = accountStatementService.createStringExtract(account, transactionIds, startDate, endDate);
-        final StringBuilder builder = new StringBuilder("sdf");
+        final StringBuilder builder = accountStatementService.createStringExtract(account, transactionIds, startDate, endDate);
         byte[] pdfBytes = accountStatementService.createExtract(builder);
-
-//        final String body = objectMapper.valueToTree(account).toPrettyString();
 
         final String title = "statement-" + Instant.now().toEpochMilli();
         sendPdf(title, pdfBytes, response);

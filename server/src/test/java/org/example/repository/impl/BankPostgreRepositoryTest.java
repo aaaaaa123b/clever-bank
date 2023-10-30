@@ -42,7 +42,7 @@ class BankPostgreRepositoryTest {
         }
 
         @Test
-        void findById() throws SQLException {
+        void shouldSuccessFindById() throws SQLException {
             int bankId = 100;
             String bankName = "TestBank";
 
@@ -59,7 +59,7 @@ class BankPostgreRepositoryTest {
         }
 
         @Test
-        void FindByIdBankNotFound() throws SQLException {
+        void shouldNotFoundFindByIdBank() throws SQLException {
             int bankId = 20;
 
             when(preparedStatement.executeQuery()).thenReturn(resultSet);
@@ -73,7 +73,7 @@ class BankPostgreRepositoryTest {
         }
 
         @Test
-        void FindByIdSQLException() throws SQLException {
+        void shouldSQLExceptionFindById() throws SQLException {
             int bankId = 1;
 
             when(preparedStatement.executeQuery()).thenThrow(new SQLException("SQL Error"));
@@ -87,7 +87,7 @@ class BankPostgreRepositoryTest {
         }
 
     @Test
-    void testCreateBankSuccess() throws SQLException {
+    void shouldSuccessCreateBank() throws SQLException {
         Bank bank = new Bank();
         bank.setName("Bank");
         int generatedId = 1;
@@ -108,7 +108,7 @@ class BankPostgreRepositoryTest {
     }
 
     @Test
-    void testCreateBankSQLException() throws SQLException {
+    void shouldSQLExceptionCreateBank() throws SQLException {
         Bank bank = new Bank();
         bank.setName("Bank");
 
@@ -123,7 +123,7 @@ class BankPostgreRepositoryTest {
     }
 
     @Test
-    void testCreateBankFailure() throws SQLException {
+    void shouldNotFoundCreateBank() throws SQLException {
         Bank bank = new Bank();
         bank.setName("Bank");
 
@@ -141,7 +141,7 @@ class BankPostgreRepositoryTest {
     }
 
     @Test
-    void testDeleteBankSuccess() throws SQLException {
+    void shouldSuccessDeleteBank() throws SQLException {
         long bankId = 1L;
 
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
@@ -153,7 +153,7 @@ class BankPostgreRepositoryTest {
     }
 
     @Test
-    void testDeleteBankSQLException() throws SQLException {
+    void shouldSQLExceptionDeleteBank() throws SQLException {
         long bankId = 1L;
 
         when(connection.prepareStatement(any(String.class))).thenThrow(new SQLException("Database error"));
@@ -168,7 +168,7 @@ class BankPostgreRepositoryTest {
     }
 
     @Test
-    void testUpdateBankSuccess() throws SQLException {
+    void shouldSuccessUpdateBank() throws SQLException {
         int bankId = 1;
         Bank updatedBank = new Bank();
         updatedBank.setId(bankId);
@@ -187,7 +187,7 @@ class BankPostgreRepositoryTest {
     }
 
     @Test
-    void testUpdateBankEntityNotFoundException() throws SQLException {
+    void shouldEntityNotFoundExceptionUpdateBank() throws SQLException {
         int bankId = 1;
         Bank updatedBank = new Bank();
         updatedBank.setId(bankId);
@@ -208,7 +208,7 @@ class BankPostgreRepositoryTest {
     }
 
     @Test
-    void testUpdateBankSQLException() throws SQLException {
+    void shouldSQLExceptionUpdateBank() throws SQLException {
         int bankId = 1;
         Bank updatedBank = new Bank();
         updatedBank.setId(bankId);

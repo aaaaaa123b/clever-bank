@@ -43,7 +43,7 @@ public class InterestCalculationServiceImpl {
         scheduler.scheduleAtFixedRate(this::calculateInterest, 5, 5, TimeUnit.SECONDS);
     }
 
-    private void calculateInterest() {
+    public void calculateInterest() {
         int interest = configuration();
 
         if (currentDate.isAfter(firstDayOfNextMonth) || currentDate.isEqual(firstDayOfNextMonth)) {

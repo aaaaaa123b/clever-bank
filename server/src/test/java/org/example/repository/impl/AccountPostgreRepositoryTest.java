@@ -38,7 +38,7 @@ class AccountPostgreRepositoryTest {
     }
 
     @Test
-    void findByIdSuccess() throws SQLException {
+    void shouldSuccessFindById() throws SQLException {
         long accountId = 1L;
         BigDecimal balance = BigDecimal.valueOf(1000);
         String currency = "USD";
@@ -61,7 +61,7 @@ class AccountPostgreRepositoryTest {
     }
 
     @Test
-    void testFindAccountByIdEntityNotFoundException() throws SQLException {
+    void shouldEntityNotFoundExceptionFindAccountById() throws SQLException {
         long accountId = 1L;
 
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
@@ -80,7 +80,7 @@ class AccountPostgreRepositoryTest {
     }
 
     @Test
-    void testFindAccountByIdSQLException() throws SQLException {
+    void shouldSQLExceptionWhenFindAccountById() throws SQLException {
         long accountId = 1L;
 
         when(connection.prepareStatement(any(String.class))).thenThrow(new SQLException("Database error"));
@@ -96,7 +96,7 @@ class AccountPostgreRepositoryTest {
 
 
     @Test
-    void findByNumberSuccess() throws SQLException {
+    void shouldSuccessfindByNumber() throws SQLException {
         String accountNumber = "123456789";
         BigDecimal balance = BigDecimal.valueOf(1000);
         String currency = "USD";
@@ -119,7 +119,7 @@ class AccountPostgreRepositoryTest {
     }
 
     @Test
-    void testFindAccountByNumberEntityNotFoundException() throws SQLException {
+    void shouldEntityNotFoundExceptionFindAccountByNumber() throws SQLException {
         String accountNumber = "9876543210";
 
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
@@ -138,7 +138,7 @@ class AccountPostgreRepositoryTest {
     }
 
     @Test
-    void testFindAccountByNumberSQLException() throws SQLException {
+    void shouldSQLExceptionFindAccountByNumber() throws SQLException {
         String accountNumber = "9876543210";
 
         when(connection.prepareStatement(any(String.class))).thenThrow(new SQLException("Database error"));
@@ -153,7 +153,7 @@ class AccountPostgreRepositoryTest {
 
 
     @Test
-    void testUpdateAccountSuccess() throws SQLException {
+    void shouldSuccessUpdateAccount() throws SQLException {
         Account account = new Account();
         account.setId(1L);
         account.setBalance(new BigDecimal("150.00"));
@@ -180,7 +180,7 @@ class AccountPostgreRepositoryTest {
     }
 
     @Test
-    void testUpdateAccountNotFound() throws SQLException {
+    void shouldNotFoundUpdateAccount() throws SQLException {
         Account account = new Account();
         account.setId(1L);
         account.setBalance(new BigDecimal("150.00"));
@@ -201,7 +201,7 @@ class AccountPostgreRepositoryTest {
     }
 
     @Test
-    void testUpdateAccountSQLException() throws SQLException {
+    void shouldSQLExceptionUpdateAccount() throws SQLException {
         Account account = new Account();
         account.setId(1L);
         account.setBalance(new BigDecimal("150.00"));
@@ -221,7 +221,7 @@ class AccountPostgreRepositoryTest {
     }
 
     @Test
-    void create() throws SQLException {
+    void shouldSuccessCreate() throws SQLException {
         Account account = new Account();
         account.setBalance(new BigDecimal("150.00"));
         account.setCurrency("EUR");
@@ -251,7 +251,7 @@ class AccountPostgreRepositoryTest {
     }
 
     @Test
-    void testCreateAccountSQLException() throws SQLException {
+    void shouldSQLExceptionCreateAccount() throws SQLException {
         Account account = new Account();
         account.setBalance(new BigDecimal("150.00"));
         account.setCurrency("EUR");
@@ -271,7 +271,7 @@ class AccountPostgreRepositoryTest {
     }
 
     @Test
-    void testCreateAccountNoResult() throws SQLException {
+    void shouldNoResultCreateAccount() throws SQLException {
         Account account = new Account();
         account.setBalance(new BigDecimal("150.00"));
         account.setCurrency("EUR");
@@ -293,7 +293,7 @@ class AccountPostgreRepositoryTest {
     }
 
     @Test
-    void testDeleteAccountSuccess() throws SQLException {
+    void shouldSuccessDeleteAccount() throws SQLException {
         long accountId = 1L;
 
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
@@ -320,7 +320,7 @@ class AccountPostgreRepositoryTest {
     }
 
     @Test
-    void testUpdateAccountWithIdSuccess() throws SQLException {
+    void shouldSuccessUpdateAccountWithId() throws SQLException {
         long accountId = 1L;
         Account updatedAccount = new Account();
         updatedAccount.setId(accountId);
@@ -350,7 +350,7 @@ class AccountPostgreRepositoryTest {
 
 
     @Test
-    void testUpdateAccountWithIdEntityNotFoundException() throws SQLException {
+    void shouldEntityNotFoundExceptionUpdateAccount() throws SQLException {
         long accountId = 1L;
         Account updatedAccount = new Account();
         updatedAccount.setId(accountId);
@@ -372,7 +372,7 @@ class AccountPostgreRepositoryTest {
     }
 
     @Test
-    void testUpdateAccountWithIdSQLException() throws SQLException {
+    void shouldSQLExceptionUpdateAccountWithId() throws SQLException {
         long accountId = 1L;
         Account updatedAccount = new Account();
         updatedAccount.setId(accountId);

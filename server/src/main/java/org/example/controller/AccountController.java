@@ -17,6 +17,7 @@ import org.example.service.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -221,7 +222,10 @@ public class AccountController extends HttpServlet {
         transactionIds = checkService.findTransactions(startDate, endDate, account);
 
         System.out.println(transactionIds);
-        byte[] pdfBytes = accountStatementService.createExtract(accountStatementService.createStringExtract(account, transactionIds, startDate, endDate));
+        // todo restore
+//        final StringBuilder builder = accountStatementService.createStringExtract(account, transactionIds, startDate, endDate);
+        final StringBuilder builder = new StringBuilder("sdf");
+        byte[] pdfBytes = accountStatementService.createExtract(builder);
 
 //        final String body = objectMapper.valueToTree(account).toPrettyString();
 
@@ -287,7 +291,8 @@ public class AccountController extends HttpServlet {
         response.setContentLength(pdfBytes.length);
         response.setHeader("Content-Disposition", "attachment; filename=\"" + title + ".pdf\"");
 
-        response.getOutputStream().write(pdfBytes);
+        final OutputStream stream = response.getOutputStream();
+        stream.write(pdfBytes);
     }
 }
 

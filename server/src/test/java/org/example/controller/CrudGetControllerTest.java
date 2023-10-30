@@ -59,7 +59,7 @@ public class CrudGetControllerTest {
     }
 
     @Test
-    public void testDoGetUser() throws Exception {
+    void shouldSuccessGetUser() throws Exception {
 
         Long userId = 1L;
         User user = new User();
@@ -86,7 +86,7 @@ public class CrudGetControllerTest {
     }
 
     @Test
-    public void testDoGetAccount() throws Exception {
+    void shouldSuccessGetAccount() throws Exception {
 
         long id = 1L;
         Account account = new Account();
@@ -115,7 +115,7 @@ public class CrudGetControllerTest {
     }
 
     @Test
-    public void testDoGetBank() throws Exception {
+    void shouldSuccessGetBank() throws Exception {
 
         int id = 1;
         Bank bank = new Bank();
@@ -139,7 +139,7 @@ public class CrudGetControllerTest {
     }
 
     @Test
-    public void testDoGetTransaction() throws Exception {
+    void shouldSuccessGetTransaction() throws Exception {
 
         Account senderAccount = new Account();
         Account recipientAccount = new Account();
@@ -169,7 +169,6 @@ public class CrudGetControllerTest {
         String expectedResponseBody = "{\"id\":1,\"senderAccount\":{\"id\":0,\"userId\":0,\"bankId\":0,\"balance\":null,\"currency\":null,\"number\":null,\"createdDate\":null},\"recipientAccount\":{\"id\":0,\"userId\":0,\"bankId\":0,\"balance\":null,\"currency\":null,\"number\":null,\"createdDate\":null},\"amount\":100.0,\"time\":\"12:00:00\",\"date\":1693515600000,\"type\":\"DEPOSIT\"}";
         Assertions.assertEquals(expectedResponseBody, responseWriter.toString().replaceAll("\\s", ""));
     }
-
 
 
 }

@@ -1,23 +1,15 @@
 package org.example.service.impl;
 
-import org.example.enumeration.TransactionType;
 import org.example.model.Transaction;
 import org.example.repository.TransactionRepository;
-
 import org.example.service.TransactionService;
 import org.example.util.ConnectionManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
-import java.sql.Time;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class TransactionServiceImplTest {
@@ -38,7 +30,7 @@ class TransactionServiceImplTest {
     }
 
     @Test
-    void create() {
+    void shouldSuccessCreate() {
         Transaction transaction = new Transaction();
         transaction.setId(1L);
 

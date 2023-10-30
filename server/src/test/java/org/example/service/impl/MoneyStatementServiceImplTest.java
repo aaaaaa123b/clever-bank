@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MoneyStatementServiceImplTest {
+class MoneyStatementServiceImplTest {
 
     @InjectMocks
     private MoneyStatementServiceServiceImpl moneyStatementService;
@@ -45,7 +45,7 @@ public class MoneyStatementServiceImplTest {
     }
 
     @Test
-    void testCreateStatement() {
+    void shouldSuccessCreateStatement() {
         Bank senderBank = mock(Bank.class);
         when(senderBank.getName()).thenReturn("SenderBank");
 
@@ -99,6 +99,8 @@ public class MoneyStatementServiceImplTest {
 
 
         Assertions.assertEquals(expectedText, statement);
+
+        Assertions.assertEquals(moneyStatementService.createStatement(new StringBuilder(expectedText)).length, moneyStatementService.createStatement(new StringBuilder(statement)).length);
     }
 }
 

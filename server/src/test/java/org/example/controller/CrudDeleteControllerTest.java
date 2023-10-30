@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.model.Account;
+import org.example.model.Bank;
 import org.example.model.User;
 import org.example.repository.BankRepository;
 import org.example.repository.TransactionRepository;
@@ -18,11 +20,13 @@ import org.mockito.Spy;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.sql.Date;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class CrudDeleteController {
+class CrudDeleteControllerTest {
     @Spy
     private ObjectMapper objectMapper;
     @Mock
@@ -50,7 +54,7 @@ public class CrudDeleteController {
     }
 
     @Test
-    public void testDoDeleteUser() throws Exception {
+    void shouldSuccessDeleteUser() throws Exception {
         Long userId = 100L;
         User user = new User();
         user.setId(userId);
@@ -66,4 +70,36 @@ public class CrudDeleteController {
         verify(userService).deleteById(userId);
     }
 
+    @Test
+    void shouldSuccessDeleteAccount() throws Exception {
+        int id = 100;
+        Account account = new Account();
+        account.setId(id);
+        account.setBalance(new BigDecimal("150.00"));
+        account.setCurrency("EUR");
+        account.setNumber("9876543210");
+        account.setUserId(1);
+        account.setBankId(1);
+        account.setCreatedDate(Date.valueOf("2023-10-29"));
+
+        when(request.getRequestURI()).thenReturn("/api/v1/crud/accounts/100");
+        crudController.doDelete(request, response);
+
+        verify(request).getRequestURI();
+        verify(accountService).deleteById((long) id);
+    }
+
+    @Test
+    void shouldSuccessDeleteBank() throws Exception {
+        int id = 1;
+        Bank bank = new Bank();
+        bank.setName("Bank");
+        bank.setId(id);
+
+        when(request.getRequestURI()).thenReturn("/api/v1/crud/banks/1");
+        crudController.doDelete(request, response);
+
+        verify(request).getRequestURI();
+        verify(bankRepository).deleteById((long) id);
+    }
 }

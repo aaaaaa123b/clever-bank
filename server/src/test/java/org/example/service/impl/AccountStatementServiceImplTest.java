@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AccountStatementServiceImplTest {
+class AccountStatementServiceImplTest {
 
     @InjectMocks
     private AccountStatementServiceImpl accountStatementService;
@@ -45,7 +45,7 @@ public class AccountStatementServiceImplTest {
     }
 
     @Test
-    void testCreateCheck() {
+    void shouldSuccessCreateCheck() {
         Bank senderBank = mock(Bank.class);
         when(senderBank.getName()).thenReturn("SenderBank");
 
@@ -82,18 +82,18 @@ public class AccountStatementServiceImplTest {
         LocalDate currentDate = LocalDate.now();
 
         String extractText = ("""
-                                                          Выписка
-                                                             %s
-                        Клиент                           | %s %s %s
-                        Счет                             | %s
-                        Валюта                           | %s
-                        Дата открытия                    | %s
-                        Период                           | %s - %s
-                        Дата и время формирования        | %s %s
-                        Остаток                          | %s
-                           Дата   |    Примечание                                |   Сумма
-                    ----------------------------------------------------------------------------------
-                    """.formatted(
+                                                      Выписка
+                                                         %s
+                    Клиент                           | %s %s %s
+                    Счет                             | %s
+                    Валюта                           | %s
+                    Дата открытия                    | %s
+                    Период                           | %s - %s
+                    Дата и время формирования        | %s %s
+                    Остаток                          | %s
+                       Дата   |    Примечание                                |   Сумма
+                ----------------------------------------------------------------------------------
+                """.formatted(
 
                 senderBank.getName(), user.getFirstName(),
                 user.getLastName(), user.getPatronymic(),
@@ -117,6 +117,7 @@ public class AccountStatementServiceImplTest {
         final String statementString = statementText.toString();
 
         Assertions.assertEquals(extractText, statementString);
+        Assertions.assertEquals(accountStatementService.createExtract(new StringBuilder(extractText)).length, accountStatementService.createExtract(new StringBuilder(statementString)).length);
         Assertions.assertEquals(PdfUtil.toPdf(extractText).length, PdfUtil.toPdf(statementString).length);
 
     }

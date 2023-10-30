@@ -42,7 +42,7 @@ class CheckPostgreRepositoryTest {
     }
 
     @Test
-    void testFindTransactionsSuccess() throws SQLException {
+    void shouldSuccessFindTransactions() throws SQLException {
         LocalDate startDate = LocalDate.of(2023, 1, 1);
         LocalDate endDate = LocalDate.of(2023, 12, 31);
         long accountId = 1L;
@@ -69,7 +69,7 @@ class CheckPostgreRepositoryTest {
 
 
     @Test
-    void testFindTransactions_SQLException() throws SQLException {
+    void shouldSQLExceptionFindTransactions() throws SQLException {
         LocalDate startDate = LocalDate.of(2023, 9, 1);
         LocalDate endDate = LocalDate.of(2023, 9, 4);
         Account account = new Account();
@@ -86,7 +86,7 @@ class CheckPostgreRepositoryTest {
     }
 
     @Test
-    void testFindAllTransactionsSuccess() throws SQLException {
+    void shouldSuccessFindAllTransactions() throws SQLException {
         long accountId = 1L;
 
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
@@ -108,7 +108,7 @@ class CheckPostgreRepositoryTest {
     }
 
     @Test
-    void testFindAllTransactionsSQLException() throws SQLException {
+    void shouldSQLExceptionFindAllTransactions() throws SQLException {
         long accountId = 1L;
         Account account = new Account();
         account.setId(accountId);

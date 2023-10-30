@@ -46,7 +46,7 @@ class TransactionPostgreRepositoryTest {
     }
 
     @Test
-    void createSuccess() throws SQLException {
+    void shouldSuccessCreate() throws SQLException {
         Transaction transaction = new Transaction();
         transaction.setTime(Time.valueOf("12:00:00"));
         transaction.setType(TransactionType.DEPOSIT);
@@ -67,7 +67,7 @@ class TransactionPostgreRepositoryTest {
     }
 
     @Test
-    void createSQLException() throws SQLException {
+    void shouldSQLExceptionCreate() throws SQLException {
         Transaction transaction = new Transaction();
         transaction.setTime(Time.valueOf("12:00:00"));
         transaction.setType(TransactionType.DEPOSIT);
@@ -86,7 +86,7 @@ class TransactionPostgreRepositoryTest {
 
 
     @Test
-    void findByIdSuccess() throws SQLException {
+    void shouldSuccessFindById() throws SQLException {
         int transactionId = 1;
         Time transactionTime = Time.valueOf("12:00:00");
         TransactionType transactionType = TransactionType.DEPOSIT;
@@ -118,7 +118,7 @@ class TransactionPostgreRepositoryTest {
     }
 
     @Test
-    void findByIdTransactionNotFound() throws SQLException {
+    void shouldEntityNotFoundExceptionFindByIdTransaction() throws SQLException {
         int transactionId = 2;
 
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
@@ -132,7 +132,7 @@ class TransactionPostgreRepositoryTest {
     }
 
     @Test
-    void findByIdSQLException() throws SQLException {
+    void shouldSQLExceptionfindById() throws SQLException {
         int transactionId = 1;
 
         when(preparedStatement.executeQuery()).thenThrow(new SQLException("SQL Error"));
@@ -146,7 +146,7 @@ class TransactionPostgreRepositoryTest {
     }
 
     @Test
-    void testUpdateTransactionSuccess() throws SQLException {
+    void shouldSuccessUpdateTransaction() throws SQLException {
         Transaction transaction = new Transaction();
         transaction.setId(1L);
         transaction.setTime(Time.valueOf("12:00:00"));
@@ -170,7 +170,7 @@ class TransactionPostgreRepositoryTest {
     }
 
     @Test
-    void testUpdateTransactionEntityNotFoundException() throws SQLException {
+    void shouldEntityNotFoundExceptionUpdateTransaction() throws SQLException {
         Transaction transaction = new Transaction();
         transaction.setId(123L);
         transaction.setTime(Time.valueOf("12:00:00"));
@@ -189,7 +189,7 @@ class TransactionPostgreRepositoryTest {
     }
 
     @Test
-    void testUpdateTransactionSQLException() throws SQLException {
+    void shouldSQLExceptionUpdateTransaction() throws SQLException {
         Transaction transaction = new Transaction();
         transaction.setId(1L);
         transaction.setTime(Time.valueOf("12:00:00"));

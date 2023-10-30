@@ -9,5 +9,4 @@ public class InterestConfig {
 
         private int size;
 
-
 }

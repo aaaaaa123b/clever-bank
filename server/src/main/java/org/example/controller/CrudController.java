@@ -132,7 +132,7 @@ public class CrudController extends HttpServlet {
             Account account = objectMapper.readValue(message, Account.class);
             account = accountService.createAccount(account);
 
-            getUser(account.getId(), response);
+            getAccount(account.getId(), response);
         }
 
         if (path.matches(CREATE_BANK)) {

@@ -24,7 +24,7 @@ import java.util.function.Function;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class AuthControllerTest {
+class AuthControllerTest {
 
     @Mock
     private ServletConfig servletConfig;
@@ -59,7 +59,7 @@ public class AuthControllerTest {
     }
 
     @Test
-    public void testDoPostForLogin() throws Exception {
+    void shouldSuccessDoPostForLogin() throws Exception {
         String loginRequestJson = "{\"userId\": 1}";
 
         LoginRequestDto loginRequestDto = new LoginRequestDto();
@@ -109,7 +109,7 @@ public class AuthControllerTest {
 
 
     @Test
-    public void testDoSignup() throws Exception {
+    void shouldSuccessDoSignup() throws Exception {
         String signupRequestJson = "{\"firstName\": \"A\", \"lastName\": \"B\", \"patronymic\": \"C\", \"login\": \"abc\"}";
 
         SignupRequestDto signupRequestDto = new SignupRequestDto();

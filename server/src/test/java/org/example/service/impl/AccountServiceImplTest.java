@@ -47,7 +47,7 @@ class AccountServiceImplTest {
     }
 
     @Test
-    public void withdrawCash() {
+    void shouldSuccessWithdrawCash() {
 
         Account account = new Account();
         account.setBalance(new BigDecimal("100.00"));
@@ -58,7 +58,7 @@ class AccountServiceImplTest {
     }
 
     @Test
-    public void withdrawCashInsufficientBalance() {
+    void shouldNotEnoughMoneyExceptionWithdrawCash() {
 
         Account account = new Account();
         account.setBalance(new BigDecimal("100.00"));
@@ -68,7 +68,7 @@ class AccountServiceImplTest {
     }
 
     @Test
-    void addCash() {
+    void shouldSuccessAddCash() {
         Account account = new Account();
         account.setBalance(new BigDecimal("100.00"));
         BigDecimal cashToAdd = new BigDecimal("50.00");
@@ -79,7 +79,7 @@ class AccountServiceImplTest {
 
 
     @Test
-    void transfer() {
+    void shouldSuccessTransfer() {
         Account sourceAccount = new Account();
         sourceAccount.setBalance(new BigDecimal("100.00"));
         Account targetAccount = new Account();
@@ -98,7 +98,7 @@ class AccountServiceImplTest {
 
 
     @Test
-    void findById() {
+    void shouldSuccessFindById() {
         long accountId = 1L;
         Account expectedAccount = mock(Account.class);
         when(accountRepository.findById(accountId)).thenReturn(expectedAccount);
@@ -111,7 +111,7 @@ class AccountServiceImplTest {
     }
 
     @Test
-    void findByNumber() {
+    void shouldSuccessFindByNumber() {
         String accountNumber = "12345";
         Account expectedAccount = mock(Account.class);
         when(accountRepository.findByNumber(accountNumber)).thenReturn(expectedAccount);
@@ -123,7 +123,7 @@ class AccountServiceImplTest {
     }
 
     @Test
-    void createAccount() {
+    void shouldSuccessCreateAccount() {
         Account accountToCreate = mock(Account.class);
 
         when(accountRepository.create(accountToCreate)).thenReturn(accountToCreate);
@@ -136,7 +136,7 @@ class AccountServiceImplTest {
     }
 
     @Test
-    void updateAccount() {
+    void shouldSuccessUpdateAccount() {
         long accountId = 1L;
         Account accountToUpdate = mock(Account.class);
         when(accountRepository.update(accountId, accountToUpdate)).thenReturn(accountToUpdate);
@@ -149,7 +149,7 @@ class AccountServiceImplTest {
     }
 
     @Test
-    void deleteById() {
+    void shouldSuccessDeleteById() {
         long accountId = 1L;
         doNothing().when(accountRepository).delete(accountId);
 

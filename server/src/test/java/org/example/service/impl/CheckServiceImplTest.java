@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class CheckServiceImplTest {
+class CheckServiceImplTest {
     @Mock
     private BankRepository bankRepository;
 
@@ -37,7 +37,7 @@ public class CheckServiceImplTest {
     }
 
     @Test
-    void testCreateCheck() {
+    void shouldSuccessCreateCheck() {
         Bank senderBank = mock(Bank.class);
         when(senderBank.getName()).thenReturn("SenderBank");
 
@@ -86,7 +86,7 @@ public class CheckServiceImplTest {
     }
 
     @Test
-    void testFindTransactions() {
+    void shouldSuccessFindTransactions() {
 
         Account account = mock(Account.class);
         LocalDate startDate = LocalDate.of(2023, 1, 1);
@@ -106,7 +106,7 @@ public class CheckServiceImplTest {
     }
 
     @Test
-    void findAllTransactions() {
+    void shouldSuccessfindAllTransactions() {
 
         Account account = mock(Account.class);
 

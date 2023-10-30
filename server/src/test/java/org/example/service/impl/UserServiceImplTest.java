@@ -27,7 +27,7 @@ class UserServiceImplTest {
 
 
     @Test
-    void findById() {
+    void shouldSuccessFindById() {
         Long userId = 1L;
         userService.findById(userId);
         verify(userRepository).findById(userId);
@@ -35,11 +35,11 @@ class UserServiceImplTest {
 
 
     @Test
-    void addUserWithParameters() {
-        String firstName = "Diana";
-        String lastName = "Harlap";
-        String patronymic = "Olegovna";
-        String login = "diana";
+    void shouldSuccessAddUserWithParameters() {
+        String firstName = "A";
+        String lastName = "B";
+        String patronymic = "C";
+        String login = "abc";
 
         userService.addUser(firstName, lastName, patronymic, login);
         verify(userRepository).addUser(firstName, lastName, patronymic, login);
@@ -48,7 +48,7 @@ class UserServiceImplTest {
 
 
     @Test
-    public void testAddUserWithUserObject() {
+    void shouldSuccessAddUserWithUserObject() {
         User user = new User();
         user.setFirstName("Diana");
         user.setLastName("Harlap");
@@ -70,7 +70,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testDeleteUserById() {
+    void shouldSuccessDeleteUserById() {
         Long userId = 3L;
 
         userService.deleteById(userId);
@@ -79,7 +79,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void testUpdateUser() {
+    void shouldSuccessUpdateUser() {
         Long userId = 4L;
         User updatedUser = new User();
         updatedUser.setId(userId);

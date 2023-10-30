@@ -1,33 +1,27 @@
 package org.example.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.dto.BalanceRequestDto;
-import org.example.dto.DepositRequestDto;
-import org.example.dto.TransferRequestDto;
+import org.example.dto.*;
 import org.example.enumeration.TransactionType;
 import org.example.model.Account;
 import org.example.model.Transaction;
-import org.example.service.AccountService;
-import org.example.service.CheckService;
-import org.example.service.TransactionService;
-import org.example.service.impl.CheckServiceImpl;
+import org.example.service.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.function.Function;
 
 import static org.mockito.Mockito.*;
@@ -42,6 +36,14 @@ public class AccountControllerTest {
 
     @Spy
     private ObjectMapper objectMapper;
+
+    @Mock
+    private MoneyStatementService moneyStatementService;
+
+    @Mock
+    private ServletOutputStream servletOutputStream;
+    @Mock
+    private AccountStatementService accountStatementService;
 
     @Mock
     private HttpServletRequest request;
@@ -61,7 +63,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testDoBalance() throws Exception {
+    void shouldSuccessDoBalance() throws Exception {
 
         BalanceRequestDto balanceRequestDto = new BalanceRequestDto();
         balanceRequestDto.setAccountId(1L);
@@ -108,7 +110,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testDoDeposite() throws Exception {
+    void shouldSuccessDoDeposite() throws Exception {
         DepositRequestDto depositRequestDto = new DepositRequestDto();
         depositRequestDto.setAccountId(1L);
         depositRequestDto.setCash(new BigDecimal("100.00"));
@@ -170,7 +172,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testDoWithdraw() throws Exception {
+    void shouldSuccessDoWithdraw() throws Exception {
         DepositRequestDto depositRequestDto = new DepositRequestDto();
         depositRequestDto.setAccountId(1L);
         depositRequestDto.setCash(new BigDecimal("100.00"));
@@ -232,7 +234,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testDoTransfer() throws Exception {
+   void shouldSuccessDoTransfer() throws Exception {
         TransferRequestDto transferRequestDto = new TransferRequestDto();
         transferRequestDto.setNumber("9876543210");
         transferRequestDto.setNumberRecipient("1076543210");
@@ -282,6 +284,105 @@ public class AccountControllerTest {
         String expectedResponseBody = "check";
         Assertions.assertEquals(expectedResponseBody, responseWriter.toString().replaceAll("\r", ""));
 
+    }
+
+    @Test
+    void shouldSuccessDoExtract() throws Exception {
+        ExctractRequestDto extractRequestDto = new ExctractRequestDto();
+        extractRequestDto.setNumber("9876543210");
+        extractRequestDto.setStartDate("2023-10-01");
+        extractRequestDto.setEndDate("2023-10-29");
+
+        String inputJsonData = "{\"number\": \"9876543210\", \"startDate\": \"2023-10-01\", \"endDate\": \"2023-10-29\"}";
+
+        Account account = new Account();
+        account.setId(1L);
+        account.setBalance(new BigDecimal("150.00"));
+        account.setCurrency("EUR");
+        account.setNumber("9876543210");
+        account.setUserId(1);
+        account.setBankId(1);
+        account.setCreatedDate(Date.valueOf("2023-10-01"));
+
+        ArrayList<Long> transactionIds = new ArrayList<>();
+        transactionIds.add(1L);
+        transactionIds.add(2L);
+        transactionIds.add(3L);
+
+        String string = "PDF Content";
+        when(request.getRequestURI()).thenReturn(AccountController.EXTRACT);
+        when(request.getReader()).thenReturn(new BufferedReader(new StringReader(inputJsonData)));
+
+        when(accountService.findByNumber("9876543210")).thenReturn(account);
+        when(checkService.findTransactions(LocalDate.parse("2023-10-01"), LocalDate.parse("2023-10-29"), account)).thenReturn(transactionIds);
+        Assertions.assertNull(accountStatementService.createExtract(any(StringBuilder.class)));
+        StringWriter responseWriter = new StringWriter();
+        when(response.getWriter()).thenReturn(new PrintWriter(responseWriter));
+        when(response.getOutputStream()).thenReturn(servletOutputStream);
+
+        when(accountStatementService.createExtract(any(StringBuilder.class))).thenReturn("sbd".getBytes());
+
+        when(accountStatementService.createStringExtract(account, transactionIds, LocalDate.parse("2023-10-01"), LocalDate.parse("2023-10-29"))).thenReturn(new StringBuilder("sbd"));
+
+        accountController.doPost(request, response);
+
+        verify(servletOutputStream).write(any(byte[].class));
+        verify(request).getRequestURI();
+        verify(request).getReader();
+        verify(accountService).findByNumber("9876543210");
+        verify(checkService).findTransactions(LocalDate.parse("2023-10-01"), LocalDate.parse("2023-10-29"), account);
+        verify(accountStatementService).createExtract(new StringBuilder(anyString()));
+        verify(response).getWriter();
+
+        Assertions.assertEquals(string, responseWriter.toString().replaceAll("\r", ""));
+    }
+
+    @Test
+    void shouldSuccessDoMoneyStatement() throws Exception {
+        MoneyStatementRequestDto requestDto = new MoneyStatementRequestDto();
+        requestDto.setNumber("9876543210");
+        requestDto.setStart("2023-10-01");
+        requestDto.setEnd("2023-10-31");
+
+        String inputJsonData = "{\"number\": \"9876543210\", \"start\": \"2023-10-01\", \"end\": \"2023-10-31\"}";
+
+        Account account = new Account();
+        account.setId(1L);
+        account.setBalance(new BigDecimal("150.00"));
+        account.setCurrency("EUR");
+        account.setNumber("9876543210");
+        account.setUserId(1);
+        account.setBankId(1);
+        account.setCreatedDate(Date.valueOf("2023-10-01"));
+
+        ArrayList<Long> transactionIds = new ArrayList<>();
+        transactionIds.add(1L);
+        transactionIds.add(2L);
+        transactionIds.add(3L);
+
+        String string = "PDF Content";
+
+        when(request.getRequestURI()).thenReturn(AccountController.MONEY_STATEMENT);
+        when(request.getReader()).thenReturn(new BufferedReader(new StringReader(inputJsonData)));
+
+        when(objectMapper.readValue(inputJsonData, MoneyStatementRequestDto.class)).thenReturn(requestDto);
+        when(accountService.findByNumber("9876543210")).thenReturn(account);
+        when(checkService.findTransactions(LocalDate.parse("2023-10-01"), LocalDate.parse("2023-10-31"), account)).thenReturn(transactionIds);
+        when(moneyStatementService.createStatement(any(StringBuilder.class))).thenReturn(string.getBytes());
+
+        StringWriter responseWriter = new StringWriter();
+        when(response.getWriter()).thenReturn(new PrintWriter(responseWriter));
+
+      //  accountController.doPost(request, response);
+
+//        verify(request).getRequestURI();
+//        verify(request).getReader();
+//        verify(accountService).findByNumber("9876543210");
+//        verify(checkService).findTransactions(LocalDate.parse("2023-10-01"), LocalDate.parse("2023-10-31"), account);
+//        verify(moneyStatementService).createStatement(any(StringBuilder.class));
+//        verify(response).getWriter();
+//
+//        Assertions.assertEquals(string, responseWriter.toString().replaceAll("\r", ""));
     }
 
 }

@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f37cb0a5-334d-42f2-ae42-553c50b7a56a" name="Changes" comment="Клиент добавлен в отдельную папку &quot;client&quot;" />
+    <list default="true" id="f37cb0a5-334d-42f2-ae42-553c50b7a56a" name="Changes" comment="Удалены ненужные для запуска проекта файлы">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/gradlew.bat" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -59,6 +70,16 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="MIXED" />
+  </component>
+  <component name="GitRewordedCommitMessages">
+    <option name="commitMessagesMapping">
+      <RewordedCommitMessageMapping>
+        <option name="originalMessage" value="Удалены ненужные для запуска проекта файлы" />
+        <option name="rewordedMessage" value="Удалены ненужные для запуска проекта файлы" />
+      </RewordedCommitMessageMapping>
+    </option>
+    <option name="currentCommit" value="1" />
+    <option name="onto" value="bd3232da274ff16264f8efddcb644d1add8f949b" />
   </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
@@ -470,7 +491,14 @@
       <option name="project" value="LOCAL" />
       <updated>1693763655902</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Удалены ненужные для запуска проекта файлы">
+      <created>1698625948313</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1698625948313</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -503,7 +531,8 @@
     <MESSAGE value="Подготовлен .gitignore для переноса сервера в отдельную папку" />
     <MESSAGE value="Сервер перенесён в отдельную папку &quot;server&quot;" />
     <MESSAGE value="Клиент добавлен в отдельную папку &quot;client&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Клиент добавлен в отдельную папку &quot;client&quot;" />
+    <MESSAGE value="Удалены ненужные для запуска проекта файлы" />
+    <option name="LAST_COMMIT_MESSAGE" value="Удалены ненужные для запуска проекта файлы" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
